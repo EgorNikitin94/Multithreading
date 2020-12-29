@@ -7,10 +7,13 @@
 //
 
 import UIKit
+import iOSIntPackage
 
 class PhotosTableViewCell: UITableViewCell {
     
     // MARK: Properties
+    
+    private let imageProcessor = ImageProcessor()
     
     private var photosLabel: UILabel = {
         let label = UILabel()
@@ -29,42 +32,50 @@ class PhotosTableViewCell: UITableViewCell {
         return arrow
     }()
     
-    private var photoOneImageView: UIImageView = {
+    private lazy var photoOneImageView: UIImageView = {
         let photo = UIImageView()
         photo.toAutoLayout()
         photo.layer.cornerRadius = 6
         photo.clipsToBounds = true
-        photo.image = StoragePhotos.photos[0]
+        imageProcessor.processImage(sourceImage: StoragePhotos.photos[0], filter: .noir) { (image) in
+            photo.image = image
+        }
         photo.contentMode = .scaleAspectFill
         return photo
     }()
     
-    private var photoTwoImageView: UIImageView = {
+    private lazy var photoTwoImageView: UIImageView = {
         let photo = UIImageView()
         photo.toAutoLayout()
         photo.layer.cornerRadius = 6
         photo.clipsToBounds = true
-        photo.image = StoragePhotos.photos[1]
+        imageProcessor.processImage(sourceImage: StoragePhotos.photos[1], filter: .noir) { (image) in
+            photo.image = image
+        }
         photo.contentMode = .scaleAspectFill
         return photo
     }()
     
-    private var photoThreeImageView: UIImageView = {
+    private lazy var photoThreeImageView: UIImageView = {
         let photo = UIImageView()
         photo.toAutoLayout()
         photo.layer.cornerRadius = 6
         photo.clipsToBounds = true
-        photo.image = StoragePhotos.photos[2]
+        imageProcessor.processImage(sourceImage: StoragePhotos.photos[2], filter: .noir) { (image) in
+            photo.image = image
+        }
         photo.contentMode = .scaleAspectFill
         return photo
     }()
     
-    private var photoFourImageView: UIImageView = {
+    private lazy var photoFourImageView: UIImageView = {
         let photo = UIImageView()
         photo.toAutoLayout()
         photo.layer.cornerRadius = 6
         photo.clipsToBounds = true
-        photo.image = StoragePhotos.photos[3]
+        imageProcessor.processImage(sourceImage: StoragePhotos.photos[3], filter: .noir) { (image) in
+            photo.image = image
+        }
         photo.contentMode = .scaleAspectFill
         return photo
     }()
