@@ -7,16 +7,22 @@
 //
 
 import UIKit
+import SnapKit
+import iOSIntPackage
 
 final class ProfileHeaderView: UIView {
     
     // MARK: Properties
     
+    private let imageProcessor = ImageProcessor()
+    
     private lazy var avatarImage: UIImageView =  {
         let imageView = UIImageView()
         imageView.backgroundColor = .white
         imageView.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-        imageView.image = #imageLiteral(resourceName: "Cat.jpeg")
+        imageProcessor.processImage(sourceImage: #imageLiteral(resourceName: "Cat.jpeg"), filter: .noir) { (image) in
+            imageView.image = image
+        }
         imageView.contentMode = .scaleAspectFill
         imageView.toAutoLayout()
         return imageView
@@ -126,36 +132,44 @@ final class ProfileHeaderView: UIView {
         self.addSubview(showStatusButton)
         self.addSubview(setStatusField)
         
-        NSLayoutConstraint.activate([
-            
-            self.heightAnchor.constraint(equalToConstant: 220),
-            
-            avatarImage.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
-            avatarImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
-            avatarImage.widthAnchor.constraint(equalToConstant: 100),
-            avatarImage.heightAnchor.constraint(equalToConstant: 100),
-            
-            nameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
-            nameLabel.leadingAnchor.constraint(equalTo: avatarImage.trailingAnchor, constant: 16),
-            nameLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
-            nameLabel.heightAnchor.constraint(equalToConstant: 20),
-            
-            statusLabel.leadingAnchor.constraint(equalTo: avatarImage.trailingAnchor, constant: 16),
-            statusLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
-            statusLabel.heightAnchor.constraint(equalToConstant: 17),
-            statusLabel.bottomAnchor.constraint(equalTo: showStatusButton.topAnchor, constant: -64),
-            
-            setStatusField.leadingAnchor.constraint(equalTo: avatarImage.trailingAnchor, constant: 16),
-            setStatusField.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
-            setStatusField.heightAnchor.constraint(equalToConstant: 40),
-            setStatusField.bottomAnchor.constraint(equalTo: showStatusButton.topAnchor, constant: -16),
-            
-            showStatusButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
-            showStatusButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
-            showStatusButton.topAnchor.constraint(equalTo: avatarImage.bottomAnchor, constant: 16),
-            showStatusButton.heightAnchor.constraint(equalToConstant: 50)
-        
-        ])
+        self.snp.makeConstraints { (make) in
+            make.height.equalTo(220)
+            make.width.equalTo(UIScreen.main.bounds.width)
+        }
+
+        avatarImage.snp.makeConstraints { (make) in
+            make.top.equalToSuperview().offset(16)
+            make.leading.equalToSuperview().offset(16)
+            make.size.equalTo(CGSize(width: 100, height: 100))
+        }
+
+        nameLabel.snp.makeConstraints { (make) in
+            make.top.equalToSuperview().offset(16)
+            make.leading.equalTo(avatarImage.snp.trailing).offset(16)
+            make.trailing.equalToSuperview().offset(-16)
+            make.height.equalTo(20)
+        }
+
+        statusLabel.snp.makeConstraints { (make) in
+            make.leading.equalTo(avatarImage.snp.trailing).offset(16)
+            make.trailing.equalToSuperview().offset(-16)
+            make.height.equalTo(17)
+            make.bottom.equalTo(showStatusButton.snp.top).offset(-64)
+        }
+
+        setStatusField.snp.makeConstraints { (make) in
+            make.leading.equalTo(avatarImage.snp.trailing).offset(16)
+            make.trailing.equalToSuperview().offset(-16)
+            make.height.equalTo(40)
+            make.bottom.equalTo(showStatusButton.snp.top).offset(-16)
+        }
+
+        showStatusButton.snp.makeConstraints { (make) in
+            make.leading.equalToSuperview().offset(16)
+            make.trailing.equalToSuperview().offset(-16)
+            make.top.equalTo(avatarImage.snp.bottom).offset(16)
+            make.height.equalTo(50)
+        }
         
     }
     
