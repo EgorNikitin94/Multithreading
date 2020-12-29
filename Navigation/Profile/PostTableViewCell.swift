@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PostTableViewCell: UITableViewCell {
+final class PostTableViewCell: UITableViewCell {
     
     // MARK: Properties
     private lazy var authorLabel: UILabel = {
@@ -110,3 +110,4 @@ class PostTableViewCell: UITableViewCell {
     }
     
 }
+
