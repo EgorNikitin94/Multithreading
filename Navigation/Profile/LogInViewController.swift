@@ -10,7 +10,7 @@ import UIKit
 
 
 
-class LogInViewController: UIViewController {
+final class LogInViewController: UIViewController {
     // MARK: Properties
     private lazy var logoImage: UIImageView = {
         let logo = UIImageView()
@@ -22,7 +22,7 @@ class LogInViewController: UIViewController {
     private lazy var logInTextField: UITextField = {
         let logIn = UITextField()
         logIn.toAutoLayout()
-        logIn.backgroundColor = .systemGray6
+        logIn.backgroundColor = #colorLiteral(red: 0.8534691637, green: 0.870538547, blue: 0.870538547, alpha: 1)
         logIn.textColor = .black
         logIn.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         logIn.layer.borderColor = UIColor.lightGray.cgColor
@@ -37,7 +37,7 @@ class LogInViewController: UIViewController {
     private lazy var passwordTextField: UITextField = {
         let password = UITextField()
         password.toAutoLayout()
-        password.backgroundColor = .systemGray6
+        password.backgroundColor = #colorLiteral(red: 0.8534691637, green: 0.870538547, blue: 0.870538547, alpha: 1)
         password.isSecureTextEntry = true
         password.textColor = .black
         password.font = UIFont.systemFont(ofSize: 16, weight: .regular)
@@ -92,6 +92,7 @@ class LogInViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupLayout()
+        self.navigationController?.navigationBar.isHidden = true
         
         /// Keyboard observers
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -121,10 +122,9 @@ class LogInViewController: UIViewController {
     }
     
     @objc private func goToProfileViewController() {
-        if let newViewController = storyboard?.instantiateViewController(withIdentifier: "ProfileViewController") as? ProfileViewController {
-            self.navigationController?.pushViewController(newViewController, animated: true)
-            view.endEditing(true)
-        }
+        let profileViewController = ProfileViewController()
+        navigationController?.pushViewController(profileViewController, animated: true)
+        view.endEditing(true)
     }
     
     override func viewWillLayoutSubviews() {
@@ -207,5 +207,6 @@ extension UIImage {
         return newImage!
     }
 }
+
 
 

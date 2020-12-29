@@ -8,15 +8,15 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController {
+final class ProfileViewController: UIViewController {
     
-    @IBOutlet private var profileHeaderView: ProfileHeaderView! {
-        didSet {
-            profileHeaderView.toAutoLayout()
-            
-        }
+    // MARK: Properties
+    
+    private lazy var profileHeaderView: ProfileHeaderView = {
+        let view = ProfileHeaderView()
         
-    }
+        return view
+    }()
     
     private var reuseID: String {
         return String(describing: PostTableViewCell.self)
@@ -32,15 +32,23 @@ class ProfileViewController: UIViewController {
     
     override func viewWillLayoutSubviews() {
         super .viewWillLayoutSubviews()
-        profileHeaderView.widthAnchor.constraint(equalTo: tableView.widthAnchor).isActive = true
+        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupLayout()
         setupTableView()
+        profileHeaderView.frame.size.width = self.view.frame.size.width
+        self.navigationController?.navigationBar.isHidden = true
         
     }
+    
+    //MARK: Actoins
+    
+    
+    
+    // MARK: Setup
     
     private func setupTableView() {
         tableView.toAutoLayout()
@@ -53,6 +61,7 @@ class ProfileViewController: UIViewController {
     private func setupLayout() {
         view.addSubview(tableView)
         let constratints = [
+            
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -65,6 +74,11 @@ class ProfileViewController: UIViewController {
     
 }
 
+
+
+
+
+// MARK: Extensions DataSource and Delegate
 
 extension ProfileViewController: UITableViewDataSource {
     
@@ -109,6 +123,7 @@ extension ProfileViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = (section == 0 ? profileHeaderView : nil)
+        
         return header
     }
     
@@ -126,3 +141,4 @@ extension ProfileViewController: UITableViewDelegate {
         return heightForFooter
     }
 }
+

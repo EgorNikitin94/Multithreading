@@ -24,7 +24,7 @@ class PhotosTableViewCell: UITableViewCell {
     private var arrowImageView: UIImageView = {
         let arrow = UIImageView()
         arrow.toAutoLayout()
-        arrow.image = UIImage(systemName: "arrow.right")
+        arrow.image = UIImage(named: "arrow.right")
         arrow.tintColor = .black
         return arrow
     }()
