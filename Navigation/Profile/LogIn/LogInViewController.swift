@@ -8,10 +8,21 @@
 
 import UIKit
 
-
+protocol LoginViewControllerDelegate: AnyObject {
+    func logInChecker(textFieldLogIn: String, completion: () -> Void)
+    func passwordChecker(textFieldPassword: String, completion: () -> Void)
+}
 
 final class LogInViewController: UIViewController {
     // MARK: Properties
+    
+    private let logInInspector = LoginInspector()
+    
+    weak var delegate: LoginViewControllerDelegate?
+    
+    private var logInFlag = false
+    private var passwordFlag = false
+    
     private lazy var logoImage: UIImageView = {
         let logo = UIImageView()
         logo.toAutoLayout()
@@ -94,6 +105,8 @@ final class LogInViewController: UIViewController {
         setupLayout()
         self.navigationController?.navigationBar.isHidden = true
         
+        self.delegate = logInInspector
+        
         /// Keyboard observers
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -122,9 +135,31 @@ final class LogInViewController: UIViewController {
     }
     
     @objc private func goToProfileViewController() {
-        let profileViewController = ProfileViewController()
-        navigationController?.pushViewController(profileViewController, animated: true)
-        view.endEditing(true)
+        
+        delegate?.logInChecker(textFieldLogIn: logInTextField.text ?? "", completion: {
+            print("check logIn")
+            logInFlag = true
+        })
+        
+        delegate?.passwordChecker(textFieldPassword: passwordTextField.text ?? "", completion: {
+            print("check password")
+            passwordFlag = true
+        })
+        
+        if logInFlag == true && passwordFlag == true {
+            let profileViewController = ProfileViewController()
+            navigationController?.pushViewController(profileViewController, animated: true)
+            view.endEditing(true)
+        } else {
+            let alertController = UIAlertController(title: "Внимание!", message: "Данные введены не верно. Попробуй еще.", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "ОК", style: .default) { _ in
+                print("ОК")
+            }
+            alertController.addAction(okAction)
+            self.present(alertController, animated: true, completion: nil)
+            logInFlag = false
+            passwordFlag = false
+        }
     }
     
     override func viewWillLayoutSubviews() {
