@@ -26,9 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window = UIWindow(frame: UIScreen.main.bounds)
         
-        let coordinator = AppCoordinator(navigator: TabBarViewController.shared.feedViewController)
-        
-        window?.rootViewController = coordinator.rootTabBarController
+        window?.rootViewController = AppCoordinator.shared.rootController
         
         window?.makeKeyAndVisible()
         

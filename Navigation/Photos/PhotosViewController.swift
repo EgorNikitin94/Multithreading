@@ -10,7 +10,9 @@ import UIKit
 
 class PhotosViewController: UIViewController {
     
-    //MARK: Properties
+    //MARK: - Properties
+    
+    private let coordinator: ChildCoordinator
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -23,8 +25,18 @@ class PhotosViewController: UIViewController {
         return cv
     }()
     
+    // MARK: - init
     
-    // MARK: Lifecycle
+    init(coordinator: ChildCoordinator) {
+        self.coordinator = coordinator
+        super .init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -43,7 +55,7 @@ class PhotosViewController: UIViewController {
         self.navigationController?.navigationBar.isHidden = true
     }
     
-    //MARK: SetupLayout
+    //MARK: - SetupLayout
     
     private func setupViews() {
         view.addSubview(collectionView)

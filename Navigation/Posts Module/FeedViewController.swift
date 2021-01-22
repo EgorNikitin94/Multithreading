@@ -13,12 +13,12 @@ final class FeedViewController: UIViewController {
     
     //Mark: -  Properties
     
-    var output: FeedViewOutput
-    
     private lazy var container: ContainerView = {
         $0.onTap = { [weak self] in
-            guard let output = self?.output else {return}
-            output.showPost()
+            guard let navigationVC = self?.navigationController else {return}
+            let coordinator = CoordinatorsFactory.makeChildCoordinator(navigator: navigationVC)
+            let postVC = PostViewController(coordinator: coordinator)
+            coordinator.push(viewController: postVC)
         }
         
         return $0
@@ -26,8 +26,7 @@ final class FeedViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        output.navigationController = self.navigationController
+
         title = "Feed"
         view.backgroundColor = .green
         setupLayout()
@@ -36,8 +35,7 @@ final class FeedViewController: UIViewController {
     
     // Mark: - init
     
-    init(output: FeedViewOutput) {
-        self.output = output
+    init() {
         super .init(nibName: nil, bundle: nil)
     }
     

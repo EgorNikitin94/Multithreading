@@ -14,6 +14,7 @@ protocol LoginViewControllerDelegate: AnyObject {
 }
 
 final class LogInViewController: UIViewController {
+    
     // MARK: Properties
     
     private let logInInspector = LoginInspector()
@@ -134,8 +135,25 @@ final class LogInViewController: UIViewController {
         scrollView.verticalScrollIndicatorInsets = .zero
     }
     
+    //Mark: - Actions
+    
     @objc private func goToProfileViewController() {
         
+        checkLoginPassword()
+        
+        if logInFlag == true && passwordFlag == true {
+            guard let navigationVC = self.navigationController else {return}
+            let coordinator = ChildCoordinator(navigator: navigationVC)
+            coordinator.makeProfileModule(coordinator: coordinator)
+            view.endEditing(true)
+        } else {
+            showAlertController()
+            logInFlag = false
+            passwordFlag = false
+        }
+    }
+    
+    private func checkLoginPassword() {
         delegate?.logInChecker(textFieldLogIn: logInTextField.text ?? "", completion: {
             print("check logIn")
             logInFlag = true
@@ -145,21 +163,15 @@ final class LogInViewController: UIViewController {
             print("check password")
             passwordFlag = true
         })
-        
-        if logInFlag == true && passwordFlag == true {
-            let profileViewController = ProfileViewController()
-            navigationController?.pushViewController(profileViewController, animated: true)
-            view.endEditing(true)
-        } else {
-            let alertController = UIAlertController(title: "Внимание!", message: "Данные введены не верно. Попробуй еще.", preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "ОК", style: .default) { _ in
-                print("ОК")
-            }
-            alertController.addAction(okAction)
-            self.present(alertController, animated: true, completion: nil)
-            logInFlag = false
-            passwordFlag = false
+    }
+    
+    private func showAlertController() {
+        let alertController = UIAlertController(title: "Внимание!", message: "Данные введены не верно. Попробуй еще.", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "ОК", style: .default) { _ in
+            print("ОК")
         }
+        alertController.addAction(okAction)
+        self.present(alertController, animated: true, completion: nil)
     }
     
     override func viewWillLayoutSubviews() {
@@ -167,7 +179,7 @@ final class LogInViewController: UIViewController {
         
     }
     
-    // MARK: Setup
+    // MARK: Setup layout
     private func setupLayout() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)

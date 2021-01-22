@@ -8,15 +8,19 @@
 
 import UIKit
 
+protocol BaseCoordinator {
+    var childCoordinators: [BaseCoordinator]? { get set }
 
-class AppCoordinator {
-    
-    let navigator: UINavigationController
-    
-    let rootTabBarController = TabBarViewController.shared
-    
-    init(navigator: UINavigationController) {
-        self.navigator = navigator
-    }
+}
 
+final class AppCoordinator: BaseCoordinator {
+    
+    static let shared = AppCoordinator()
+    
+    var childCoordinators: [BaseCoordinator]?
+    
+    let rootController: TabBarViewController = TabBarViewController()
+    
+    private init() {}
+    
 }
