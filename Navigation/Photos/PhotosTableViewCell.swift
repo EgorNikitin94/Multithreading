@@ -7,13 +7,20 @@
 //
 
 import UIKit
-import iOSIntPackage
 
-class PhotosTableViewCell: UITableViewCell {
+final class PhotosTableViewCell: UITableViewCell {
     
     // MARK: Properties
     
-    private let imageProcessor = ImageProcessor()
+    var cellConfigure: ([UIImage])? {
+        didSet {
+            guard let images = cellConfigure else {return}
+            photoOneImageView.image = images[0]
+            photoTwoImageView.image = images[1]
+            photoThreeImageView.image = images[2]
+            photoFourImageView.image = images[3]
+        }
+    }
     
     private var photosLabel: UILabel = {
         let label = UILabel()
@@ -37,9 +44,6 @@ class PhotosTableViewCell: UITableViewCell {
         photo.toAutoLayout()
         photo.layer.cornerRadius = 6
         photo.clipsToBounds = true
-        imageProcessor.processImage(sourceImage: StoragePhotos.photos[0], filter: .noir) { (image) in
-            photo.image = image
-        }
         photo.contentMode = .scaleAspectFill
         return photo
     }()
@@ -49,9 +53,6 @@ class PhotosTableViewCell: UITableViewCell {
         photo.toAutoLayout()
         photo.layer.cornerRadius = 6
         photo.clipsToBounds = true
-        imageProcessor.processImage(sourceImage: StoragePhotos.photos[1], filter: .noir) { (image) in
-            photo.image = image
-        }
         photo.contentMode = .scaleAspectFill
         return photo
     }()
@@ -61,9 +62,6 @@ class PhotosTableViewCell: UITableViewCell {
         photo.toAutoLayout()
         photo.layer.cornerRadius = 6
         photo.clipsToBounds = true
-        imageProcessor.processImage(sourceImage: StoragePhotos.photos[2], filter: .noir) { (image) in
-            photo.image = image
-        }
         photo.contentMode = .scaleAspectFill
         return photo
     }()
@@ -73,9 +71,6 @@ class PhotosTableViewCell: UITableViewCell {
         photo.toAutoLayout()
         photo.layer.cornerRadius = 6
         photo.clipsToBounds = true
-        imageProcessor.processImage(sourceImage: StoragePhotos.photos[3], filter: .noir) { (image) in
-            photo.image = image
-        }
         photo.contentMode = .scaleAspectFill
         return photo
     }()
@@ -95,7 +90,6 @@ class PhotosTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         setupLayout()
-        
     }
     
     required init?(coder: NSCoder) {
@@ -135,8 +129,5 @@ class PhotosTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate(constraints)
         
     }
-    
-    
-    
-    
+
 }

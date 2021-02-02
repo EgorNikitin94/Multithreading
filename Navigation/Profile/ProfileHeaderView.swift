@@ -8,21 +8,21 @@
 
 import UIKit
 import SnapKit
-import iOSIntPackage
 
 final class ProfileHeaderView: UIView {
     
     // MARK: Properties
     
-    private let imageProcessor = ImageProcessor()
+    var avatarImageConfigure: UIImage? {
+        didSet {
+            avatarImage.image = avatarImageConfigure
+        }
+    }
     
     private lazy var avatarImage: UIImageView =  {
         let imageView = UIImageView()
         imageView.backgroundColor = .white
         imageView.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-        imageProcessor.processImage(sourceImage: #imageLiteral(resourceName: "Cat.jpeg"), filter: .noir) { (image) in
-            imageView.image = image
-        }
         imageView.contentMode = .scaleAspectFill
         imageView.toAutoLayout()
         return imageView
@@ -81,16 +81,17 @@ final class ProfileHeaderView: UIView {
     private var statusText: String = ""
     
     // MARK: initializer
+    
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = .white
         setupLayout()
-        
+
     }
     
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        
+        fatalError("init(coder:) has not been implemented")
     }
     
     
@@ -104,7 +105,7 @@ final class ProfileHeaderView: UIView {
     
     
     // MARK: Actions
-    @objc func buttonPressed() {
+    @objc private func buttonPressed() {
         statusLabel.text = statusText
         guard let consoleMessage = statusLabel.text else {
             print("field is empty")

@@ -11,6 +11,17 @@ import UIKit
 final class PostTableViewCell: UITableViewCell {
     
     // MARK: Properties
+    
+    var cellConfigure: (author: String, image: UIImage?, description: String, likes: String, views: String)? {
+        didSet {
+            authorLabel.text = cellConfigure?.author
+            postImageView.image = cellConfigure?.image
+            descriptionLabel.text = cellConfigure?.description
+            likesLabel.text = cellConfigure?.likes
+            viewsLabel.text = cellConfigure?.views
+        }
+    }
+    
     private lazy var authorLabel: UILabel = {
         let author = UILabel()
         author.toAutoLayout()
@@ -57,7 +68,6 @@ final class PostTableViewCell: UITableViewCell {
     // MARK: Initializer
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
         selectionStyle = .none
         setupLayout()
         
@@ -68,13 +78,6 @@ final class PostTableViewCell: UITableViewCell {
     }
     
     //MARK: SETUP
-    internal func configure(post: Post) {
-        authorLabel.text = post.author
-        postImageView.image = UIImage(named: post.image)
-        descriptionLabel.text = post.description
-        likesLabel.text = "Likes: \(String(post.likes))"
-        viewsLabel.text = "Views: \(String(post.views))"
-    }
     
     private func setupLayout() {
         contentView.addSubview(authorLabel)
