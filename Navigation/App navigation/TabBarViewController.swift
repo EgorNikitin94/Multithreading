@@ -10,11 +10,19 @@ import UIKit
 
 final class TabBarViewController: UITabBarController {
     
-    let feedViewController = UINavigationController(rootViewController: FeedViewController())
+    static let shared = TabBarViewController()
+    
+    let feedViewController = UINavigationController(rootViewController: FeedViewController(output: PostPresenter()))
     
     let logInViewController = UINavigationController(rootViewController: LogInViewController())
     
+    private init() {
+        super .init(nibName: nil, bundle: nil)
+    }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,7 +33,9 @@ final class TabBarViewController: UITabBarController {
         
     }
     
-    func tabBarItemSettings()  {
+    private func tabBarItemSettings() {
+        
+        self.view.backgroundColor = .white
         
         self.tabBar.tintColor = #colorLiteral(red: 0.2823529412, green: 0.5215686275, blue: 0.8, alpha: 1)
         

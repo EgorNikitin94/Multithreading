@@ -26,13 +26,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window = UIWindow(frame: UIScreen.main.bounds)
         
-        let tabBarViewController = TabBarViewController()
+        let coordinator = AppCoordinator(navigator: TabBarViewController.shared.feedViewController)
         
-        tabBarViewController.view.backgroundColor = .white
-        
-        window?.rootViewController = tabBarViewController
+        window?.rootViewController = coordinator.rootTabBarController
         
         window?.makeKeyAndVisible()
+        
     }
     
     /// Сообщает делегату, что приложение собирается перейти на передний план.
