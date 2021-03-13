@@ -18,6 +18,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         buildApp()
         
+        let appConfiguration:AppConfiguration = randomConfigApp()
+        
+        let url = URL(string: appConfiguration.rawValue)
+        
+        if let urlUnwrapped = url {
+            print(urlUnwrapped)
+            NetworkService.dataTask(url: urlUnwrapped) { (string) in
+                if let result = string {
+                    print(result)
+                }
+            }
+        }
+        // No Internet  connection error
+        ///Error Domain=NSURLErrorDomain Code=-1009 "The Internet connection appears to be offline."
+        
         return true
     }
     
@@ -70,6 +85,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
         print(type(of: self), #function)
         return true
+    }
+    
+    private func randomConfigApp() -> AppConfiguration {
+        
+        let randomNumber = Int(arc4random_uniform(2))
+        
+        switch randomNumber {
+        case 0:
+            return AppConfiguration.configOne
+        case 1:
+            return AppConfiguration.configTwo
+        case 2:
+            return AppConfiguration.configThree
+        default:
+            return AppConfiguration.unknown
+        }
     }
     
 }

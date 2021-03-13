@@ -32,6 +32,8 @@
 		5094E8F6255B372300A70E8E /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5094E8F5255B372300A70E8E /* LogInViewController.swift */; };
 		5095F10625ACF3C6005005A0 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5095F10525ACF3C6005005A0 /* AppCoordinator.swift */; };
 		5095F10925AD01CE005005A0 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5095F10525ACF3C6005005A0 /* AppCoordinator.swift */; };
+		50A3FDD825FCCAF600BC8E48 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A3FDD725FCCAF600BC8E48 /* NetworkService.swift */; };
+		50A3FDDE25FCCC2500BC8E48 /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A3FDDD25FCCC2500BC8E48 /* AppConfiguration.swift */; };
 		50B5D591259B44BD003C372B /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B5D590259B44BD003C372B /* TabBarViewController.swift */; };
 		50B5D59A259B4EE1003C372B /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060782B5250CE27700A87020 /* FeedViewController.swift */; };
 		50B5D59B259B4EE1003C372B /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5077CFAE255DA46E00BC50C3 /* Storage.swift */; };
@@ -85,6 +87,8 @@
 		508F947B25647068003E2A58 /* Photos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photos.swift; sourceTree = "<group>"; };
 		5094E8F5255B372300A70E8E /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		5095F10525ACF3C6005005A0 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		50A3FDD725FCCAF600BC8E48 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		50A3FDDD25FCCC2500BC8E48 /* AppConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfiguration.swift; sourceTree = "<group>"; };
 		50B5D590259B44BD003C372B /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		50B5D5B2259B4EE1003C372B /* Navigation copy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Navigation copy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		50B5D5B3259B4EE3003C372B /* Navigation copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Navigation copy-Info.plist"; path = "/Users/EgorNikitin/Desktop/Обучение IOS Разработчик SWIFT/6.Промышленная разработка/Multithreading/Navigation copy-Info.plist"; sourceTree = "<absolute>"; };
@@ -143,6 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				060782B1250CE27700A87020 /* AppDelegate.swift */,
+				50A3FDD625FCCAC900BC8E48 /* NetworkService */,
 				50B5D58F259B444F003C372B /* App navigation */,
 				5077CFA9255DA2CA00BC50C3 /*  Model */,
 				5077CFAD255DA43100BC50C3 /* Storage */,
@@ -204,6 +209,15 @@
 				508F947825646967003E2A58 /* PhotosCollectionViewCell.swift */,
 			);
 			path = Photos;
+			sourceTree = "<group>";
+		};
+		50A3FDD625FCCAC900BC8E48 /* NetworkService */ = {
+			isa = PBXGroup;
+			children = (
+				50A3FDD725FCCAF600BC8E48 /* NetworkService.swift */,
+				50A3FDDD25FCCC2500BC8E48 /* AppConfiguration.swift */,
+			);
+			path = NetworkService;
 			sourceTree = "<group>";
 		};
 		50B5D58F259B444F003C372B /* App navigation */ = {
@@ -432,6 +446,7 @@
 				500C257D25A8984D00383FAF /* ContainerView.swift in Sources */,
 				060782B6250CE27700A87020 /* FeedViewController.swift in Sources */,
 				50CD168C25B066270059B364 /* CoordinatorsFactory.swift in Sources */,
+				50A3FDD825FCCAF600BC8E48 /* NetworkService.swift in Sources */,
 				5077CFAF255DA46E00BC50C3 /* Storage.swift in Sources */,
 				060782B2250CE27700A87020 /* AppDelegate.swift in Sources */,
 				5094E8F6255B372300A70E8E /* LogInViewController.swift in Sources */,
@@ -442,6 +457,7 @@
 				506F066925A72353005A0816 /* Checker.swift in Sources */,
 				504B8639254B561D00526BFD /* ProfileHeaderView.swift in Sources */,
 				508F94732564681C003E2A58 /* PhotosTableViewCell.swift in Sources */,
+				50A3FDDE25FCCC2500BC8E48 /* AppConfiguration.swift in Sources */,
 				50B5D591259B44BD003C372B /* TabBarViewController.swift in Sources */,
 				508F9476256468ED003E2A58 /* PhotosViewController.swift in Sources */,
 				50EB664A256400030034129A /* Colors.swift in Sources */,
