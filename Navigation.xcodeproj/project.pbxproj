@@ -18,8 +18,10 @@
 		1546C3ACC1273A30AF63CF91 /* Pods_Navigation_copy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CED3966A130966809B750D63 /* Pods_Navigation_copy.framework */; };
 		500C257D25A8984D00383FAF /* ContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 500C257C25A8984D00383FAF /* ContainerView.swift */; };
 		502E9F4C25B5B3F000E280FB /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 502E9F4B25B5B3F000E280FB /* ProfileViewModel.swift */; };
+		503CF749260121C20084B5AF /* StarWarsPlanet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503CF748260121C20084B5AF /* StarWarsPlanet.swift */; };
 		504B8639254B561D00526BFD /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504B8638254B561D00526BFD /* ProfileHeaderView.swift */; };
 		504B863C254B566C00526BFD /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504B863B254B566C00526BFD /* ProfileViewController.swift */; };
+		505BB49B26026F8100E6B8A7 /* Resident.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505BB49A26026F8100E6B8A7 /* Resident.swift */; };
 		506F066925A72353005A0816 /* Checker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 506F066825A72353005A0816 /* Checker.swift */; };
 		506F066D25A72976005A0816 /* LoginInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 506F066C25A72976005A0816 /* LoginInspector.swift */; };
 		5073E0C525B9FADF0049CF09 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 502E9F4B25B5B3F000E280FB /* ProfileViewModel.swift */; };
@@ -75,8 +77,10 @@
 		4774A638263B02EE58496E82 /* Pods-Navigation copy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Navigation copy.release.xcconfig"; path = "Target Support Files/Pods-Navigation copy/Pods-Navigation copy.release.xcconfig"; sourceTree = "<group>"; };
 		500C257C25A8984D00383FAF /* ContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
 		502E9F4B25B5B3F000E280FB /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		503CF748260121C20084B5AF /* StarWarsPlanet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarWarsPlanet.swift; sourceTree = "<group>"; };
 		504B8638254B561D00526BFD /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
 		504B863B254B566C00526BFD /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		505BB49A26026F8100E6B8A7 /* Resident.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resident.swift; sourceTree = "<group>"; };
 		506F066825A72353005A0816 /* Checker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checker.swift; sourceTree = "<group>"; };
 		506F066C25A72976005A0816 /* LoginInspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInspector.swift; sourceTree = "<group>"; };
 		5077CFAA255DA30500BC50C3 /* Posts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Posts.swift; sourceTree = "<group>"; };
@@ -187,6 +191,8 @@
 			isa = PBXGroup;
 			children = (
 				5077CFAA255DA30500BC50C3 /* Posts.swift */,
+				503CF748260121C20084B5AF /* StarWarsPlanet.swift */,
+				505BB49A26026F8100E6B8A7 /* Resident.swift */,
 			);
 			path = " Model";
 			sourceTree = "<group>";
@@ -444,10 +450,12 @@
 				5095F10625ACF3C6005005A0 /* AppCoordinator.swift in Sources */,
 				502E9F4C25B5B3F000E280FB /* ProfileViewModel.swift in Sources */,
 				500C257D25A8984D00383FAF /* ContainerView.swift in Sources */,
+				505BB49B26026F8100E6B8A7 /* Resident.swift in Sources */,
 				060782B6250CE27700A87020 /* FeedViewController.swift in Sources */,
 				50CD168C25B066270059B364 /* CoordinatorsFactory.swift in Sources */,
 				50A3FDD825FCCAF600BC8E48 /* NetworkService.swift in Sources */,
 				5077CFAF255DA46E00BC50C3 /* Storage.swift in Sources */,
+				503CF749260121C20084B5AF /* StarWarsPlanet.swift in Sources */,
 				060782B2250CE27700A87020 /* AppDelegate.swift in Sources */,
 				5094E8F6255B372300A70E8E /* LogInViewController.swift in Sources */,
 				060782C6250CEB0A00A87020 /* InfoViewController.swift in Sources */,
