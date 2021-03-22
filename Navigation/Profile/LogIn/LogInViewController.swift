@@ -9,8 +9,9 @@
 import UIKit
 
 protocol LoginViewControllerDelegate: AnyObject {
-    func logInChecker(textFieldLogIn: String, completion: () -> Void)
-    func passwordChecker(textFieldPassword: String, completion: () -> Void)
+    func checkUser(userEmail: String, userPassword: String, completion: @escaping (Bool) -> Void)
+    func createUser(userEmail: String, userPassword: String, completion: @escaping (Bool) -> Void)
+    func signOutUser(completion: @escaping (Error?) -> Void)
 }
 
 final class LogInViewController: UIViewController {
@@ -20,9 +21,6 @@ final class LogInViewController: UIViewController {
     private let logInInspector = LoginInspector()
     
     weak var delegate: LoginViewControllerDelegate?
-    
-    private var logInFlag = false
-    private var passwordFlag = false
     
     private lazy var logoImage: UIImageView = {
         let logo = UIImageView()
@@ -87,6 +85,21 @@ final class LogInViewController: UIViewController {
         return button
     }()
     
+    private lazy var createProfileButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.toAutoLayout()
+        button.setBackgroundImage(#imageLiteral(resourceName: "blue_pixel").alpha(1), for: .normal)
+        button.setBackgroundImage(#imageLiteral(resourceName: "blue_pixel").alpha(0.8), for: .selected)
+        button.setBackgroundImage(#imageLiteral(resourceName: "blue_pixel").alpha(0.8), for: .highlighted)
+        button.setBackgroundImage(#imageLiteral(resourceName: "blue_pixel").alpha(0.8), for: .disabled)
+        button.setTitle("Create profile", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 10
+        button.layer.masksToBounds = true
+        button.addTarget(self, action: #selector (createUser), for: .touchUpInside)
+        return button
+    }()
+    
     private let contentView: UIView = {
         let view = UIView()
         view.toAutoLayout()
@@ -114,6 +127,17 @@ final class LogInViewController: UIViewController {
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super .viewWillAppear(animated)
+        
+        delegate?.signOutUser(completion: { [weak self] (error) in
+            guard let strongSelf = self else { return }
+            if error != nil {
+                strongSelf.showAlertController(message: "Не удалось выйти из аккаунта, перезагрузите пожалуйста приложение")
+            }
+        })
+    }
+    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
@@ -138,35 +162,56 @@ final class LogInViewController: UIViewController {
     //Mark: - Actions
     
     @objc private func goToProfileViewController() {
-        
-        checkLoginPassword()
-        
-        if logInFlag == true && passwordFlag == true {
-            guard let navigationVC = self.navigationController else {return}
-            let coordinator = ChildCoordinator(navigator: navigationVC)
-            coordinator.makeProfileModule(coordinator: coordinator)
-            view.endEditing(true)
+        if logInTextField.text?.isEmpty == true && passwordTextField.text?.isEmpty == true {
+            showAlertController(message: "Заполните все поля пожуйста!")
+            
+        } else if logInTextField.text?.isEmpty == true {
+            showAlertController(message: "Заполните поле Login!")
+            
+        } else if  passwordTextField.text?.isEmpty == true {
+            showAlertController(message: "Заполните поле Password!")
+            
         } else {
-            showAlertController()
-            logInFlag = false
-            passwordFlag = false
+            delegate?.checkUser(userEmail: logInTextField.text!, userPassword: passwordTextField.text!, completion: { [weak self] (result) in
+                
+                guard let strongSelf = self else { return }
+                if result {
+                    guard let navigationVC = strongSelf.navigationController else { return }
+                    let coordinator = ChildCoordinator(navigator: navigationVC)
+                    coordinator.makeProfileModule(coordinator: coordinator)
+                    strongSelf.view.endEditing(true)
+                } else {
+                    strongSelf.showAlertController(message: "Данные введены не верно или пользователя не существует")
+                }
+            })
         }
     }
     
-    private func checkLoginPassword() {
-        delegate?.logInChecker(textFieldLogIn: logInTextField.text ?? "", completion: {
-            print("check logIn")
-            logInFlag = true
-        })
-        
-        delegate?.passwordChecker(textFieldPassword: passwordTextField.text ?? "", completion: {
-            print("check password")
-            passwordFlag = true
-        })
+    @objc private func createUser() {
+        if logInTextField.text?.isEmpty == true && passwordTextField.text?.isEmpty == true {
+            showAlertController(message: "Заполните все поля пожуйста!")
+            
+        } else if logInTextField.text?.isEmpty == true {
+            showAlertController(message: "Заполните поле Login!")
+            
+        } else if  passwordTextField.text?.isEmpty == true {
+            showAlertController(message: "Заполните поле Password!")
+            
+        } else {
+            delegate?.createUser(userEmail: logInTextField.text!, userPassword: passwordTextField.text!, completion: { [weak self] (result) in
+                
+                guard let strongSelf = self else { return }
+                if result {
+                    strongSelf.showAlertController(title: "Успешно", message: "Новый пользователь создан успешно")
+                } else {
+                    strongSelf.showAlertController(message: "Ошибка при создании нового пользователя")
+                }
+            })
+        }
     }
     
-    private func showAlertController() {
-        let alertController = UIAlertController(title: "Внимание!", message: "Данные введены не верно. Попробуй еще.", preferredStyle: .alert)
+    private func showAlertController(title: String = "Внимание!" ,message: String) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let okAction = UIAlertAction(title: "ОК", style: .default) { _ in
             print("ОК")
         }
@@ -187,6 +232,7 @@ final class LogInViewController: UIViewController {
         contentView.addSubview(logoImage)
         contentView.addSubview(inputFieldsView)
         contentView.addSubview(logInButton)
+        contentView.addSubview(createProfileButton)
         
         inputFieldsView.addSubview(logInTextField)
         inputFieldsView.addSubview(passwordTextField)
@@ -228,7 +274,12 @@ final class LogInViewController: UIViewController {
             logInButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             logInButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             logInButton.heightAnchor.constraint(equalToConstant: 50),
-            logInButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
+            
+            createProfileButton.topAnchor.constraint(equalTo: logInButton.bottomAnchor, constant: 16),
+            createProfileButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            createProfileButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            createProfileButton.heightAnchor.constraint(equalToConstant: 50),
+            createProfileButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
             
         ]
         

@@ -7,28 +7,51 @@
 //
 
 import Foundation
+import FirebaseAuth
 
-class LoginInspector: LoginViewControllerDelegate {
+final class LoginInspector: LoginViewControllerDelegate {
     
-    func logInChecker(textFieldLogIn: String, completion: () -> Void) {
-        let checkerLogIn = Checker.shared.check(textFieldLogIn)
-        if checkerLogIn == true {
-            print("logIn: OK")
-            completion()
-        } else {
-            print("logIn: try once more")
+    func checkUser(userEmail: String, userPassword: String, completion: @escaping (Bool) -> Void) {
+        
+        Auth.auth().signIn(withEmail: userEmail, password: userPassword) { (authData, error) in
+            
+            if error != nil {
+                print(error.debugDescription)
+            }
+            
+            if authData == nil {
+                completion(false)
+            } else {
+                completion(true)
+            }
         }
     }
     
-    func passwordChecker(textFieldPassword: String, completion: () -> Void) {
-        let checkerPassword = Checker.shared.check(textFieldPassword)
-        if checkerPassword == true {
-            print("password: OK")
-            completion()
-        } else {
-            print("password: try once more")
+    func createUser(userEmail: String, userPassword: String, completion: @escaping (Bool) -> Void) {
+        
+        Auth.auth().createUser(withEmail: userEmail, password: userPassword) { (authData, error) in
+            
+            if error != nil {
+                print(error.debugDescription)
+            }
+            
+            if authData == nil {
+                completion(false)
+            } else {
+                completion(true)
+            }
+        }
+    }
+    
+    func signOutUser(completion: @escaping (Error?) -> Void) {
+        if Auth.auth().currentUser != nil {
+            do {
+              try FirebaseAuth.Auth.auth().signOut()
+            } catch let signOutError {
+                print (signOutError.localizedDescription)
+                completion(signOutError)
+            }
         }
     }
     
 }
-
