@@ -70,6 +70,9 @@ final class PostTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
         setupLayout()
+        let doubleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(doubleTap))
+        doubleTapGestureRecognizer.numberOfTapsRequired = 2
+        contentView.addGestureRecognizer(doubleTapGestureRecognizer)
         
     }
     
@@ -77,7 +80,27 @@ final class PostTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: Actions
+    @objc private func doubleTap() {
+        print("doubleTap")
+        let favoritPost = CoreDataStack.sharedInstance.createObject(from: FavoritPost.self)
+        favoritPost.author = authorLabel.text
+        favoritPost.desc = descriptionLabel.text
+        favoritPost.image = postImageView.image?.jpegData(compressionQuality: 1)
+        favoritPost.likes = likesLabel.text
+        favoritPost.views = viewsLabel.text
+        CoreDataStack.sharedInstance.save()
+    }
+    
     //MARK: SETUP
+    
+    func configure(_ favoritPost: FavoritPost) {
+        authorLabel.text = favoritPost.author
+        descriptionLabel.text = favoritPost.desc
+        postImageView.image = UIImage(data: favoritPost.image!) ?? nil
+        likesLabel.text = favoritPost.likes
+        viewsLabel.text = favoritPost.views
+    }
     
     private func setupLayout() {
         contentView.addSubview(authorLabel)

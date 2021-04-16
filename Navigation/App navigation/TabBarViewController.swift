@@ -14,10 +14,12 @@ final class TabBarViewController: UITabBarController {
     
     let logInViewController = UINavigationController(rootViewController: LogInViewController())
     
+    let favoritesPostsViewController = UINavigationController(rootViewController: FavoritesPostsViewController())
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        viewControllers = [feedViewController, logInViewController]
+        viewControllers = [feedViewController, logInViewController, favoritesPostsViewController]
         
         tabBarItemSettings()
         
@@ -36,6 +38,11 @@ final class TabBarViewController: UITabBarController {
         logInViewController.tabBarItem.image = UIImage(named: "person")
         
         logInViewController.tabBarItem.title = "Profile"
+        
+        favoritesPostsViewController.tabBarItem.image = UIImage(named: "star")
+        
+        favoritesPostsViewController.tabBarItem.title = "Favorites"
+
     }
     
 }
