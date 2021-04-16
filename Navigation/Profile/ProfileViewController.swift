@@ -146,12 +146,11 @@ extension ProfileViewController: UITableViewDataSource {
 extension ProfileViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let index = [0, 0]
-        if indexPath.elementsEqual(index) {
+        if indexPath.section == 0 {
             let photosViewController = PhotosViewController(coordinator: coordinator)
             coordinator.push(viewController: photosViewController)
             
-        }
+        } 
         
     }
     
