@@ -27,8 +27,12 @@ final class CoreDataStack {
         persistentStoreContainer.viewContext
     }
     
+    func getBackgroundContext() -> NSManagedObjectContext {
+        persistentStoreContainer.newBackgroundContext()
+    }
+    
     func save() {
-        let context = getContext()
+        let context = getBackgroundContext()
         if context.hasChanges {
             do {
                 try context.save()
@@ -44,9 +48,35 @@ final class CoreDataStack {
         return object
     }
     
+    func delete(object: NSManagedObject) {
+        let context = getContext()
+        context.delete(object)
+        if context.hasChanges {
+            do {
+                try context.save()
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
     func fetchData<T: NSManagedObject>(for entity: T.Type) -> [T] {
         let context = getContext()
         let request = entity.fetchRequest() as! NSFetchRequest<T>
+        
+        do {
+            return try context.fetch(request)
+        } catch {
+            fatalError()
+        }
+    }
+    
+    func searchObjects<T: NSManagedObject, String>(for entity: T.Type, author: String) -> [T] {
+        let context = getContext()
+        let request = entity.fetchRequest() as! NSFetchRequest<T>
+        request.entity = FavoritPost.entity()
+        let predicate = NSPredicate(format: "%K LIKE %@", #keyPath(FavoritPost.author), "\(author)")
+        request.predicate = predicate
         
         do {
             return try context.fetch(request)

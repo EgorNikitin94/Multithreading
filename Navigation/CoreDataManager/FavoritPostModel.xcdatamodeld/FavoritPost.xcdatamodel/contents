@@ -2,8 +2,8 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17511" systemVersion="19H2" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="FavoritPost" representedClassName="FavoritPost" syncable="YES">
         <attribute name="author" optional="YES" attributeType="String"/>
-        <attribute name="desc" optional="YES" attributeType="String"/>
-        <attribute name="image" optional="YES" attributeType="Binary"/>
+        <attribute name="desc" optional="YES" attributeType="String" minValueString="0" maxValueString="100"/>
+        <attribute name="image" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
         <attribute name="likes" optional="YES" attributeType="String"/>
         <attribute name="views" optional="YES" attributeType="String"/>
     </entity>
