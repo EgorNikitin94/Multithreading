@@ -27,8 +27,11 @@ final class CoreDataStack {
         persistentStoreContainer.viewContext
     }
     
-    func save() {
-        let context = getContext()
+    func getBackgroundContext() -> NSManagedObjectContext {
+        persistentStoreContainer.newBackgroundContext()
+    }
+    
+    func save(context: NSManagedObjectContext) {
         if context.hasChanges {
             do {
                 try context.save()
@@ -38,15 +41,49 @@ final class CoreDataStack {
         }
     }
     
-    func createObject<T: NSManagedObject> (from entity: T.Type) -> T {
+    func createObject(author: String?, description: String?, image: Data?, likes: String?, views: String?) {
+        let context = getBackgroundContext()
+        context.perform {
+            let favoritPost = NSEntityDescription.insertNewObject(forEntityName: String(describing: FavoritPost.self), into: context) as! FavoritPost
+            favoritPost.author = author
+            favoritPost.desc = description
+            favoritPost.image = image
+            favoritPost.likes = likes
+            favoritPost.views = likes
+            self.save(context: context)
+        }
+        
+    }
+    
+    func delete(object: NSManagedObject) {
         let context = getContext()
-        let object = NSEntityDescription.insertNewObject(forEntityName: String(describing: entity), into: context) as! T
-        return object
+        context.delete(object)
+        if context.hasChanges {
+            do {
+                try context.save()
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
     }
     
     func fetchData<T: NSManagedObject>(for entity: T.Type) -> [T] {
         let context = getContext()
         let request = entity.fetchRequest() as! NSFetchRequest<T>
+        
+        do {
+            return try context.fetch(request)
+        } catch {
+            fatalError()
+        }
+    }
+    
+    func searchObjects<T: NSManagedObject, String>(for entity: T.Type, author: String) -> [T] {
+        let context = getContext()
+        let request = entity.fetchRequest() as! NSFetchRequest<T>
+        request.entity = FavoritPost.entity()
+        let predicate = NSPredicate(format: "%K LIKE %@", #keyPath(FavoritPost.author), "\(author)")
+        request.predicate = predicate
         
         do {
             return try context.fetch(request)

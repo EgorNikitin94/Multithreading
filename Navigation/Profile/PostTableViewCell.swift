@@ -83,13 +83,12 @@ final class PostTableViewCell: UITableViewCell {
     // MARK: Actions
     @objc private func doubleTap() {
         print("doubleTap")
-        let favoritPost = CoreDataStack.sharedInstance.createObject(from: FavoritPost.self)
-        favoritPost.author = authorLabel.text
-        favoritPost.desc = descriptionLabel.text
-        favoritPost.image = postImageView.image?.jpegData(compressionQuality: 1)
-        favoritPost.likes = likesLabel.text
-        favoritPost.views = viewsLabel.text
-        CoreDataStack.sharedInstance.save()
+        CoreDataStack.sharedInstance.createObject(author: authorLabel.text,
+                                                  description: descriptionLabel.text,
+                                                  image: postImageView.image?.jpegData(compressionQuality: 1),
+                                                  likes: likesLabel.text,
+                                                  views: viewsLabel.text )
+
     }
     
     //MARK: SETUP
@@ -97,7 +96,9 @@ final class PostTableViewCell: UITableViewCell {
     func configure(_ favoritPost: FavoritPost) {
         authorLabel.text = favoritPost.author
         descriptionLabel.text = favoritPost.desc
-        postImageView.image = UIImage(data: favoritPost.image!) ?? nil
+        if let image = favoritPost.image {
+            postImageView.image = UIImage(data: image)
+        }
         likesLabel.text = favoritPost.likes
         viewsLabel.text = favoritPost.views
     }
