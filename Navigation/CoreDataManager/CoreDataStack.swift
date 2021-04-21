@@ -31,8 +31,7 @@ final class CoreDataStack {
         persistentStoreContainer.newBackgroundContext()
     }
     
-    func save() {
-        let context = getBackgroundContext()
+    func save(context: NSManagedObjectContext) {
         if context.hasChanges {
             do {
                 try context.save()
@@ -42,10 +41,18 @@ final class CoreDataStack {
         }
     }
     
-    func createObject<T: NSManagedObject> (from entity: T.Type) -> T {
-        let context = getContext()
-        let object = NSEntityDescription.insertNewObject(forEntityName: String(describing: entity), into: context) as! T
-        return object
+    func createObject(author: String?, description: String?, image: Data?, likes: String?, views: String?) {
+        let context = getBackgroundContext()
+        context.perform {
+            let favoritPost = NSEntityDescription.insertNewObject(forEntityName: String(describing: FavoritPost.self), into: context) as! FavoritPost
+            favoritPost.author = author
+            favoritPost.desc = description
+            favoritPost.image = image
+            favoritPost.likes = likes
+            favoritPost.views = likes
+            self.save(context: context)
+        }
+        
     }
     
     func delete(object: NSManagedObject) {

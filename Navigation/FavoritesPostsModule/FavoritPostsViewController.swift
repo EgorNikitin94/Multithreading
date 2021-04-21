@@ -51,7 +51,6 @@ final class FavoritesPostsViewController: UIViewController {
         view.backgroundColor = .white
         
         title = "Favorites posts"
-    
         setupLayout()
         setupTableView()
     }
