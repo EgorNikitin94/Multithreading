@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 final class FavoritesPostsViewController: UIViewController {
     
@@ -16,8 +17,6 @@ final class FavoritesPostsViewController: UIViewController {
     private var reuseID: String = "favoritPostReuseID"
     
     private let tableView = UITableView(frame: .zero, style: .grouped)
-    
-    private var favoritesPostsContainer = [FavoritPost]()
     
     private lazy var findBarButton: UIBarButtonItem = {
         $0.image  =  UIImage(named: "loupe")
@@ -35,13 +34,17 @@ final class FavoritesPostsViewController: UIViewController {
         return $0
     }(UIBarButtonItem())
     
-    //MARK: LifeCycle
+    private lazy var fetchResultController: NSFetchedResultsController<FavoritPost>  = {
+        
+        let request = FavoritPost.fetchRequest() as NSFetchRequest<FavoritPost>
+        let nameSort = NSSortDescriptor(key: #keyPath(FavoritPost.author), ascending: true)
+        request.sortDescriptors = [nameSort]
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: CoreDataStack.sharedInstance.getContext(), sectionNameKeyPath: nil, cacheName: nil)
+        fetchedResultsController.delegate = self
+        return fetchedResultsController
+    }()
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        favoritesPostsContainer = CoreDataStack.sharedInstance.fetchData(for: FavoritPost.self)
-        tableView.reloadData()
-    }
+    //MARK: LifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,6 +56,28 @@ final class FavoritesPostsViewController: UIViewController {
         title = "Favorites posts"
         setupLayout()
         setupTableView()
+        performResultController()
+        
+    }
+    
+    private func performResultController(predicate: NSPredicate? = nil) {
+        
+        fetchResultController.fetchRequest.predicate = predicate
+        
+        do {
+            try fetchResultController.performFetch()
+            tableView.reloadData()
+        } catch {
+            assertionFailure()
+        }
+        
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+    
+    private func makePredicate(author: String) -> NSPredicate {
+        NSPredicate(format: "%K LIKE %@", #keyPath(FavoritPost.author), "\(author)")
     }
     
     //MARK: Setup layout
@@ -84,11 +109,12 @@ final class FavoritesPostsViewController: UIViewController {
         alertController.addTextField { (text) in
             text.placeholder = "Enter author"
         }
-        let alertActionFind = UIAlertAction(title: "Search", style: .default) { (alert) in
+        let alertActionFind = UIAlertAction(title: "Search", style: .default) { [weak self] (alert) in
+            guard let self = self else { return }
             let searchedPost = alertController.textFields?[0].text
             if let post = searchedPost, post != "" {
-                self.favoritesPostsContainer = CoreDataStack.sharedInstance.searchObjects(for: FavoritPost.self, author: post)
-                self.tableView.reloadData()
+                let predicate = self.makePredicate(author: post)
+                self.performResultController(predicate: predicate)
             }
             
         }
@@ -99,8 +125,7 @@ final class FavoritesPostsViewController: UIViewController {
     }
     
     @objc func clearFinder(_ sender: UIBarButtonItem) {
-        favoritesPostsContainer = CoreDataStack.sharedInstance.fetchData(for: FavoritPost.self)
-        tableView.reloadData()
+        performResultController()
     }
 }
 
@@ -110,13 +135,15 @@ final class FavoritesPostsViewController: UIViewController {
 extension FavoritesPostsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return favoritesPostsContainer.count
+        guard let productItems = fetchResultController.fetchedObjects else {
+            return 0
+        }
+        return productItems.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let favoritPost = fetchResultController.object(at: indexPath)
         let cell: PostTableViewCell = tableView.dequeueReusableCell(withIdentifier: reuseID, for: indexPath) as! PostTableViewCell
-        
-        let favoritPost: FavoritPost = favoritesPostsContainer[indexPath.row]
         cell.configure(favoritPost)
         
         return cell
@@ -126,26 +153,47 @@ extension FavoritesPostsViewController: UITableViewDataSource {
 
 extension FavoritesPostsViewController: UITableViewDelegate {
     
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let contextItem = UIContextualAction(style: .destructive, title: "Delete") { [weak self] (contextualAction, view, boolValue) in
-            let favoritPost: FavoritPost? = self?.favoritesPostsContainer[indexPath.row]
-            self?.favoritesPostsContainer.remove(at: indexPath.row)
-            self?.tableView.performBatchUpdates {
-                self?.tableView.deleteRows(at: [indexPath], with: .fade)
-            }
-            if let post = favoritPost {
-                CoreDataStack.sharedInstance.delete(object: post)
-                tableView.reloadData()
-            }
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let favoritPost = fetchResultController.object(at: indexPath)
+            CoreDataStack.sharedInstance.delete(object: favoritPost)
         }
-    
-      return UISwipeActionsConfiguration(actions: [contextItem])
-  }
+    }
 }
 
 
 
-
+extension FavoritesPostsViewController: NSFetchedResultsControllerDelegate {
+    
+    private func controllerWillChangeContent(controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.beginUpdates()
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        
+        switch (type) {
+        case .insert:
+            if let indexPath = newIndexPath {
+                tableView.insertRows(at: [indexPath], with: .fade)
+            }
+        case .delete:
+            if let indexPath = indexPath {
+                tableView.deleteRows(at: [indexPath], with: .fade)
+            }
+        case .move:
+            break;
+        case .update:
+            break;
+        @unknown default:
+            break;
+        }
+    }
+    
+    private func controllerDidChangeContent(controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.endUpdates()
+    }
+    
+}
 
 
 
