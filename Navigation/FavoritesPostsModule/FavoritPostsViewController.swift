@@ -27,7 +27,7 @@ final class FavoritesPostsViewController: UIViewController {
     }(UIBarButtonItem())
     
     private lazy var clearBarButton: UIBarButtonItem = {
-        $0.title = "Clear"
+        $0.title = LocalizableStrings.clear.rawValue.localize()
         $0.action = #selector(clearFinder)
         $0.style = .plain
         $0.target = self
@@ -53,7 +53,7 @@ final class FavoritesPostsViewController: UIViewController {
         navigationItem.leftBarButtonItem  = clearBarButton
         view.backgroundColor = .white
         
-        title = "Favorites posts"
+        title = LocalizableStrings.favoritesPosts.rawValue.localize()
         setupLayout()
         setupTableView()
         performResultController()
@@ -105,11 +105,11 @@ final class FavoritesPostsViewController: UIViewController {
     //MARK: Actions
     
     @objc func findPost(_ sender: UIBarButtonItem) {
-        let alertController = UIAlertController(title: "Find post", message: "Enter author", preferredStyle: .alert)
+        let alertController = UIAlertController(title: LocalizableStrings.findPost.rawValue.localize(), message: LocalizableStrings.enterAuthor.rawValue.localize(), preferredStyle: .alert)
         alertController.addTextField { (text) in
-            text.placeholder = "Enter author"
+            text.placeholder = LocalizableStrings.enterAuthor.rawValue.localize()
         }
-        let alertActionFind = UIAlertAction(title: "Search", style: .default) { [weak self] (alert) in
+        let alertActionFind = UIAlertAction(title: LocalizableStrings.search.rawValue.localize(), style: .default) { [weak self] (alert) in
             guard let self = self else { return }
             let searchedPost = alertController.textFields?[0].text
             if let post = searchedPost, post != "" {
@@ -118,7 +118,7 @@ final class FavoritesPostsViewController: UIViewController {
             }
             
         }
-        let alertActionCancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let alertActionCancel = UIAlertAction(title: LocalizableStrings.cancel.rawValue.localize(), style: .cancel, handler: nil)
         alertController.addAction(alertActionFind)
         alertController.addAction(alertActionCancel)
         present(alertController, animated: true, completion: nil)

@@ -39,7 +39,7 @@ final class LogInViewController: UIViewController {
         logIn.tintColor = Colors.colorSet
         logIn.autocapitalizationType = .none
         logIn.indent(size: 10)
-        logIn.placeholder = "Email or phone"
+        logIn.placeholder = LocalizableStrings.emailOrPhone.rawValue.localize()
         return logIn
     }()
     
@@ -55,7 +55,7 @@ final class LogInViewController: UIViewController {
         password.tintColor = Colors.colorSet
         password.autocapitalizationType = .none
         password.indent(size: 10)
-        password.placeholder = "Password"
+        password.placeholder = LocalizableStrings.password.rawValue.localize()
         return password
     }()
     
@@ -76,7 +76,7 @@ final class LogInViewController: UIViewController {
         button.setBackgroundImage(#imageLiteral(resourceName: "blue_pixel").alpha(0.8), for: .selected)
         button.setBackgroundImage(#imageLiteral(resourceName: "blue_pixel").alpha(0.8), for: .highlighted)
         button.setBackgroundImage(#imageLiteral(resourceName: "blue_pixel").alpha(0.8), for: .disabled)
-        button.setTitle("Create profile", for: .normal)
+        button.setTitle(LocalizableStrings.createProfile.rawValue.localize(), for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 10
         button.layer.masksToBounds = true
@@ -118,8 +118,8 @@ final class LogInViewController: UIViewController {
             guard let strongSelf = self else { return }
             if result {
 
-                let alertController = UIAlertController(title: "Welcome", message: email ?? "User", preferredStyle: .alert)
-                let okAction = UIAlertAction(title: "Sigh in", style: .default) { _ in
+                let alertController = UIAlertController(title: LocalizableStrings.welcome.rawValue.localize(), message: email ?? LocalizableStrings.user.rawValue.localize(), preferredStyle: .alert)
+                let okAction = UIAlertAction(title: LocalizableStrings.sighIn.rawValue.localize(), style: .default) { _ in
                     guard let navigationVC = strongSelf.navigationController else { return }
                     let coordinator = ChildCoordinator(navigator: navigationVC)
                     coordinator.makeProfileModule(coordinator: coordinator)
@@ -158,13 +158,13 @@ final class LogInViewController: UIViewController {
     
     @objc private func createUser() {
         if logInTextField.text?.isEmpty == true && passwordTextField.text?.isEmpty == true {
-            showAlertController(message: "Заполните все поля пожуйста!")
+            showAlertController(message: LocalizableStrings.pleaseFillInAllTheFields.rawValue.localize())
 
         } else if logInTextField.text?.isEmpty == true {
-            showAlertController(message: "Заполните поле Login!")
+            showAlertController(message: LocalizableStrings.fillInTheLoginField.rawValue.localize())
 
         } else if  passwordTextField.text?.isEmpty == true {
-            showAlertController(message: "Заполните поле Password!")
+            showAlertController(message: LocalizableStrings.fillInThePasswordField.rawValue.localize())
 
         } else {
             let user = User(id: UUID().uuidString ,email: logInTextField.text ?? "", password: passwordTextField.text ?? "")
@@ -176,13 +176,13 @@ final class LogInViewController: UIViewController {
                     coordinator.makeProfileModule(coordinator: coordinator)
                     strongSelf.view.endEditing(true)
                 } else {
-                    strongSelf.showAlertController(message: "Ошибка при создании нового пользователя")
+                    strongSelf.showAlertController(message: LocalizableStrings.errorWhileCreatingNewUser.rawValue.localize())
                 }
             })
         }
     }
     
-    private func showAlertController(title: String = "Внимание!" ,message: String) {
+    private func showAlertController(title: String = LocalizableStrings.attention.rawValue.localize() ,message: String) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let okAction = UIAlertAction(title: "ОК", style: .default) { _ in
             print("ОК")

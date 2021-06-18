@@ -15,7 +15,7 @@ final class PostViewController: UIViewController {
     private lazy var editButton: UIBarButtonItem = {
         var button = UIBarButtonItem()
         button.target = self
-        button.title = "Edit"
+        button.title = LocalizableStrings.edit.rawValue.localize()
         button.style = .plain
         button.action = #selector(tapButton)
         return button
@@ -35,7 +35,7 @@ final class PostViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .red
-        title = "Post"
+        title = LocalizableStrings.post.rawValue.localize()
         navigationItem.rightBarButtonItem = editButton
     }
     

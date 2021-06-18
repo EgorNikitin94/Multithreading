@@ -16,7 +16,7 @@ class ContainerView: UIView {
     var onTap: (() -> Void)?
     
     private lazy var buttonOne: UIButton = {
-        $0.setTitle("FirstButton", for: .normal)
+        $0.setTitle(LocalizableStrings.firstButton.rawValue.localize(), for: .normal)
         $0.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         $0.setTitleColor(.black, for: .normal)
         $0.addTarget(self, action: #selector(tapButton), for: .touchUpInside)
@@ -25,7 +25,7 @@ class ContainerView: UIView {
     }(UIButton())
     
     private lazy var buttonTwo: UIButton = {
-        $0.setTitle("SecondButton", for: .normal)
+        $0.setTitle(LocalizableStrings.secondButton.rawValue.localize(), for: .normal)
         $0.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         $0.setTitleColor(.black, for: .normal)
         $0.addTarget(self, action: #selector(tapButton), for: .touchUpInside)

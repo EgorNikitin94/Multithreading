@@ -33,15 +33,15 @@ final class TabBarViewController: UITabBarController {
         
         feedViewController.tabBarItem.image = UIImage(named: "house")
         
-        feedViewController.tabBarItem.title = "Feed"
+        feedViewController.tabBarItem.title = LocalizableStrings.feed.rawValue.localize()
         
         logInViewController.tabBarItem.image = UIImage(named: "person")
         
-        logInViewController.tabBarItem.title = "Profile"
+        logInViewController.tabBarItem.title = LocalizableStrings.profile.rawValue.localize()
         
         favoritesPostsViewController.tabBarItem.image = UIImage(named: "star")
         
-        favoritesPostsViewController.tabBarItem.title = "Favorites"
+        favoritesPostsViewController.tabBarItem.title = LocalizableStrings.favorites.rawValue.localize()
 
     }
     

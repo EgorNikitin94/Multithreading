@@ -25,9 +25,23 @@ final class ProfileViewModel: ProfileViewControllerOutput {
         let author = post.author
         let image = UIImage(named: post.image)
         let description = post.description
-        let likes = "Likes: \(String(post.likes))"
-        let views = "Views: \(String(post.views))"
+        let likes = localizeLikes(count: UInt(post.likes))
+        let views = localizeViews(count: UInt(post.views))
         return (author, image, description, likes, views)
+    }
+    
+    private func localizeViews(count: UInt) -> String {
+        let formatString: String = NSLocalizedString("views count", comment: "views count title")
+        let resultString: String = String.localizedStringWithFormat(formatString, count)
+        return resultString
+        
+    }
+    
+    private func localizeLikes(count: UInt) -> String {
+        let formatString: String = NSLocalizedString("likes count", comment: "likes count title")
+        let resultString: String = String.localizedStringWithFormat(formatString, count)
+        return resultString
+        
     }
     
     public func configurePhotos() -> [UIImage] {
