@@ -1,0 +1,40 @@
+/* 
+  Localizable.strings
+  Navigation
+
+  Created by Егор Никитин on 17.06.2021.
+  Copyright © 2021 Artem Novichkov. All rights reserved.
+*/
+
+"Email or phone" = "Электронная почта или номер телефона";
+"Password" = "Пароль";
+"Create profile" = "Создать профиль";
+"Welcome" = "Добро пожаловать";
+"User" = "Пользователь";
+"Sigh in" = "Войти";
+"Please fill in all the fields!" = "Заполните все поля пожуйста!";
+"Fill in the login field" = "Заполните поле Login!";
+"Fill in the password field!" = "Заполните поле Password!";
+"Error while creating a new user" = "Ошибка при создании нового пользователя";
+"Attention!" = "Внимание!";
+"Set status" = "Задать статус";
+"Photos" = "Фотографии";
+"Photo Gallery" = "Фото галерея";
+"Clear" = "Очистить";
+"Favorites posts" = "Избранные посты";
+"Find post" = "Найти пост";
+"Enter author" = "Введите автора поста";
+"Search" = "Искать";
+"Cancel" = "Отмена";
+"FirstButton" = "Первая кнопка";
+"SecondButton" = "Вторая кнопка";
+"Feed" = "Новости";
+"Edit" = "Редактировать";
+"Post" = "Пост";
+"Show Alert" = "Показать предупреждение";
+"Delete post?" = "Удалить пост?";
+"The post cannot be restored" = "Пост нельзя будет восстановить";
+"Delete" = "Удалить";
+"Profile" = "Профиль";
+"Favorites" = "Избранное";
+

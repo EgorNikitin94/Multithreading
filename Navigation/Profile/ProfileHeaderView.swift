@@ -51,7 +51,7 @@ final class ProfileHeaderView: UIView {
     private lazy var showStatusButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .systemBlue
-        button.setTitle("Set status", for: .normal)
+        button.setTitle(LocalizableStrings.setStatus.rawValue.localize(), for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)

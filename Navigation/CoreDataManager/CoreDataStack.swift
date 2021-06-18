@@ -48,7 +48,7 @@ final class CoreDataStack {
         favoritPost.desc = description
         favoritPost.image = image
         favoritPost.likes = likes
-        favoritPost.views = likes
+        favoritPost.views = views
         self.save(context: context)
         
     }

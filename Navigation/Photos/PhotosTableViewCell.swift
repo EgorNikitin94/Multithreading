@@ -25,7 +25,7 @@ final class PhotosTableViewCell: UITableViewCell {
     private var photosLabel: UILabel = {
         let label = UILabel()
         label.toAutoLayout()
-        label.text = "Photos"
+        label.text = LocalizableStrings.photos.rawValue.localize()
         label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
         return label

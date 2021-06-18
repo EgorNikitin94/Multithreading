@@ -42,7 +42,7 @@ class PhotosViewController: UIViewController {
         
         setupViews()
         view.backgroundColor = .white
-        self.navigationItem.title = "Photo Gallery"
+        self.navigationItem.title = LocalizableStrings.photoGallery.rawValue.localize()
     }
     
     override func viewWillAppear(_ animated: Bool) {

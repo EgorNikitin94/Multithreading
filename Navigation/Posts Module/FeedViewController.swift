@@ -27,7 +27,7 @@ final class FeedViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = "Feed"
+        title = LocalizableStrings.feed.rawValue.localize()
         view.backgroundColor = .green
         setupLayout()
         
