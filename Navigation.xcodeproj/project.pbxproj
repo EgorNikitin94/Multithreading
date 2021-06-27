@@ -43,6 +43,7 @@
 		50B5D591259B44BD003C372B /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B5D590259B44BD003C372B /* TabBarViewController.swift */; };
 		50B5D5C5259B6214003C372B /* iOSIntPackage in Frameworks */ = {isa = PBXBuildFile; productRef = 50B5D5C4259B6214003C372B /* iOSIntPackage */; };
 		50B7CBF1267CE13F00A1A739 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 50B7CBF3267CE13F00A1A739 /* Localizable.stringsdict */; };
+		50C9F19A2687CE3C00DBB059 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C9F1992687CE3C00DBB059 /* UIViewExtension.swift */; };
 		50CD168C25B066270059B364 /* CoordinatorsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CD168B25B066270059B364 /* CoordinatorsFactory.swift */; };
 		50E3C86C25AF96C1009FE70F /* ChildCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E3C86B25AF96C1009FE70F /* ChildCoordinator.swift */; };
 		50E92790255DEBC300CB8A71 /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E9278F255DEBC200CB8A71 /* PostTableViewCell.swift */; };
@@ -94,6 +95,7 @@
 		50B5D5B3259B4EE3003C372B /* Navigation copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Navigation copy-Info.plist"; path = "/Users/EgorNikitin/Desktop/Обучение IOS Разработчик SWIFT/6.Промышленная разработка/Multithreading/Navigation copy-Info.plist"; sourceTree = "<absolute>"; };
 		50B7CBF2267CE13F00A1A739 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = ru; path = ru.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		50B7CBF4267CE15100A1A739 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		50C9F1992687CE3C00DBB059 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		50CD168B25B066270059B364 /* CoordinatorsFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorsFactory.swift; sourceTree = "<group>"; };
 		50E3C86B25AF96C1009FE70F /* ChildCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildCoordinator.swift; sourceTree = "<group>"; };
 		50E9278F255DEBC200CB8A71 /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
@@ -150,6 +152,7 @@
 				5019C9ED26276B8C00E866FE /* FavoritesPostsModule */,
 				5074D535262965F000B88CCF /* CoreDataManager */,
 				506A50B9267B705800120820 /* Localization */,
+				50C9F1982687CB6500DBB059 /* Helpers */,
 				060782BA250CE27A00A87020 /* Assets.xcassets */,
 				060782BC250CE27A00A87020 /* LaunchScreen.storyboard */,
 				060782BF250CE27A00A87020 /* Info.plist */,
@@ -269,6 +272,14 @@
 				060782C9250CEE7200A87020 /* Post.swift */,
 			);
 			path = "Posts Module";
+			sourceTree = "<group>";
+		};
+		50C9F1982687CB6500DBB059 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				50C9F1992687CE3C00DBB059 /* UIViewExtension.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		50EB66482563FFE50034129A /* Colors */ = {
@@ -448,6 +459,7 @@
 				5074D553262976E900B88CCF /* FavoritPost+CoreDataProperties.swift in Sources */,
 				50EB664A256400030034129A /* Colors.swift in Sources */,
 				508F947C25647068003E2A58 /* Photos.swift in Sources */,
+				50C9F19A2687CE3C00DBB059 /* UIViewExtension.swift in Sources */,
 				504B863C254B566C00526BFD /* ProfileViewController.swift in Sources */,
 				508F947925646967003E2A58 /* PhotosCollectionViewCell.swift in Sources */,
 				060782C8250CEE5D00A87020 /* PostViewController.swift in Sources */,

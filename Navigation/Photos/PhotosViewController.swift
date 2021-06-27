@@ -17,7 +17,7 @@ class PhotosViewController: UIViewController {
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cv.backgroundColor = .white
+        cv.backgroundColor = UIColor.createColor(lightMode: .white, darkMode: .black)
         cv.register(PhotosCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: PhotosCollectionViewCell.self))
         cv.dataSource = self
         cv.delegate = self
@@ -41,7 +41,7 @@ class PhotosViewController: UIViewController {
         super.viewDidLoad()
         
         setupViews()
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.createColor(lightMode: .white, darkMode: .black)
         self.navigationItem.title = LocalizableStrings.photoGallery.rawValue.localize()
     }
     

@@ -22,11 +22,13 @@ final class PhotosTableViewCell: UITableViewCell {
         }
     }
     
+    private var appTraitCollection = UITraitCollection()
+    
     private var photosLabel: UILabel = {
         let label = UILabel()
         label.toAutoLayout()
         label.text = LocalizableStrings.photos.rawValue.localize()
-        label.textColor = .black
+        label.textColor = UIColor.createColor(lightMode: .black, darkMode: .white)
         label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
         return label
     }()
@@ -35,7 +37,7 @@ final class PhotosTableViewCell: UITableViewCell {
         let arrow = UIImageView()
         arrow.toAutoLayout()
         arrow.image = UIImage(named: "arrow.right")
-        arrow.tintColor = .black
+        arrow.tintColor = UIColor.createColor(lightMode: .black, darkMode: .white)
         return arrow
     }()
     
@@ -88,8 +90,9 @@ final class PhotosTableViewCell: UITableViewCell {
     // MARK: Initializer
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+        self.backgroundColor = UIColor.createColor(lightMode: .white, darkMode: .black)
         setupLayout()
+        
     }
     
     required init?(coder: NSCoder) {
@@ -97,6 +100,7 @@ final class PhotosTableViewCell: UITableViewCell {
     }
     
     // MARK: Setup Layout
+    
     private func setupLayout() {
         contentView.addSubview(photosLabel)
         contentView.addSubview(arrowImageView)

@@ -43,6 +43,7 @@ final class InfoViewController: UIViewController {
     
     private let titleLabel: UILabel = {
         $0.font = UIFont.systemFont(ofSize: 14)
+        $0.textColor = .black
         $0.textAlignment = .center
         $0.toAutoLayout()
         return $0
@@ -50,6 +51,7 @@ final class InfoViewController: UIViewController {
     
     private let orbitalPeriodLabel: UILabel = {
         $0.font = UIFont.systemFont(ofSize: 20)
+        $0.textColor = .black
         $0.textAlignment = .center
         $0.toAutoLayout()
         return $0
