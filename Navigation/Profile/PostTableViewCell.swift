@@ -26,7 +26,7 @@ final class PostTableViewCell: UITableViewCell {
         let author = UILabel()
         author.toAutoLayout()
         author.font = UIFont.systemFont(ofSize: 20, weight: .bold)
-        author.textColor = UIColor.createColor(lightMode: .black, darkMode: .white)
+        author.textColor = Colors.textColor
         author.numberOfLines = 2
         return author
     }()
@@ -43,7 +43,7 @@ final class PostTableViewCell: UITableViewCell {
     private lazy var postImageView: UIImageView = {
         let image = UIImageView()
         image.toAutoLayout()
-        image.backgroundColor = UIColor.createColor(lightMode: .white, darkMode: .black)
+        image.backgroundColor = Colors.backgroundColor
         image.contentMode = .scaleAspectFit
         return image
     }()
@@ -52,7 +52,7 @@ final class PostTableViewCell: UITableViewCell {
         let likes = UILabel()
         likes.toAutoLayout()
         likes.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        likes.textColor = UIColor.createColor(lightMode: .black, darkMode: .white)
+        likes.textColor = Colors.textColor
         return likes
     }()
     
@@ -60,7 +60,7 @@ final class PostTableViewCell: UITableViewCell {
         let views = UILabel()
         views.toAutoLayout()
         views.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        views.textColor = UIColor.createColor(lightMode: .black, darkMode: .white)
+        views.textColor = Colors.textColor
         views.textAlignment = .right
         return views
     }()
@@ -70,7 +70,7 @@ final class PostTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
         setupLayout()
-        self.backgroundColor = UIColor.createColor(lightMode: .white, darkMode: .black)
+        self.backgroundColor = Colors.backgroundColor
         let doubleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(doubleTap))
         doubleTapGestureRecognizer.numberOfTapsRequired = 2
         contentView.addGestureRecognizer(doubleTapGestureRecognizer)

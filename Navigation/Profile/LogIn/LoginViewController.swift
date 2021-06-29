@@ -31,10 +31,10 @@ final class LogInViewController: UIViewController {
     private lazy var logInTextField: UITextField = {
         let logIn = UITextField()
         logIn.toAutoLayout()
-        logIn.backgroundColor = UIColor.createColor(lightMode: #colorLiteral(red: 0.8534691637, green: 0.870538547, blue: 0.870538547, alpha: 1), darkMode: #colorLiteral(red: 0.3103783312, green: 0.3103783312, blue: 0.3103783312, alpha: 1))
-        logIn.textColor = UIColor.createColor(lightMode: .black, darkMode: .white)
+        logIn.backgroundColor = Colors.textViewBackgroundColor
+        logIn.textColor = Colors.textColor
         logIn.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        logIn.layer.borderColor = UIColor.createColor(lightMode: UIColor.lightGray, darkMode: UIColor.white).cgColor
+        logIn.layer.borderColor = Colors.textViewBorderColor
         logIn.layer.borderWidth = 0.25
         logIn.tintColor = Colors.colorSet
         logIn.autocapitalizationType = .none
@@ -46,11 +46,11 @@ final class LogInViewController: UIViewController {
     private lazy var passwordTextField: UITextField = {
         let password = UITextField()
         password.toAutoLayout()
-        password.backgroundColor = UIColor.createColor(lightMode: #colorLiteral(red: 0.8534691637, green: 0.870538547, blue: 0.870538547, alpha: 1), darkMode: #colorLiteral(red: 0.3103783312, green: 0.3103783312, blue: 0.3103783312, alpha: 1))
+        password.backgroundColor = Colors.textViewBackgroundColor
         password.isSecureTextEntry = true
-        password.textColor = UIColor.createColor(lightMode: .black, darkMode: .white)
+        password.textColor = Colors.textColor
         password.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        password.layer.borderColor = UIColor.createColor(lightMode: UIColor.lightGray, darkMode: UIColor.white).cgColor
+        password.layer.borderColor = Colors.textViewBorderColor
         password.layer.borderWidth = 0.25
         password.tintColor = Colors.colorSet
         password.autocapitalizationType = .none
@@ -64,7 +64,7 @@ final class LogInViewController: UIViewController {
         inputFields.toAutoLayout()
         inputFields.layer.cornerRadius = 10
         inputFields.layer.masksToBounds = true
-        inputFields.layer.borderColor = UIColor.createColor(lightMode: UIColor.lightGray, darkMode: UIColor.white).cgColor
+        inputFields.layer.borderColor = Colors.textViewBorderColor
         inputFields.layer.borderWidth = 0.5
         return inputFields
     }()
@@ -99,7 +99,7 @@ final class LogInViewController: UIViewController {
     // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.createColor(lightMode: .white, darkMode: .black)
+        view.backgroundColor = Colors.backgroundColor
         setupLayout()
         self.navigationController?.navigationBar.isHidden = true
         
@@ -196,20 +196,20 @@ final class LogInViewController: UIViewController {
         
     }
     
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        if previousTraitCollection?.userInterfaceStyle == UIUserInterfaceStyle.light {
-            logInTextField.layer.borderColor = UIColor.white.cgColor
-            passwordTextField.layer.borderColor = UIColor.white.cgColor
-            inputFieldsView.layer.borderColor = UIColor.white.cgColor
-        } else if previousTraitCollection?.userInterfaceStyle == UIUserInterfaceStyle.dark {
-            logInTextField.layer.borderColor = UIColor.lightGray.cgColor
-            passwordTextField.layer.borderColor = UIColor.lightGray.cgColor
-            inputFieldsView.layer.borderColor = UIColor.lightGray.cgColor
+    override func traitCollectionDidChange(_ traitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(traitCollection)
+        if traitCollection?.userInterfaceStyle == UIUserInterfaceStyle.light {
+            logInTextField.layer.borderColor = Colors.textViewBorderColor(theme: .darkTheme)
+            passwordTextField.layer.borderColor = Colors.textViewBorderColor(theme: .darkTheme)
+            inputFieldsView.layer.borderColor = Colors.textViewBorderColor(theme: .darkTheme)
+        } else if traitCollection?.userInterfaceStyle == UIUserInterfaceStyle.dark {
+            logInTextField.layer.borderColor = Colors.textViewBorderColor(theme: .lightTheme)
+            passwordTextField.layer.borderColor = Colors.textViewBorderColor(theme: .lightTheme)
+            inputFieldsView.layer.borderColor = Colors.textViewBorderColor(theme: .lightTheme)
         } else {
-            logInTextField.layer.borderColor = UIColor.white.cgColor
-            passwordTextField.layer.borderColor = UIColor.white.cgColor
-            inputFieldsView.layer.borderColor = UIColor.white.cgColor
+            logInTextField.layer.borderColor = Colors.textViewBorderColor(theme: .darkTheme)
+            passwordTextField.layer.borderColor = Colors.textViewBorderColor(theme: .darkTheme)
+            inputFieldsView.layer.borderColor = Colors.textViewBorderColor(theme: .darkTheme)
         }
         
     }

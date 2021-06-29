@@ -22,7 +22,7 @@ final class ProfileHeaderView: UIView {
     private lazy var avatarImage: UIImageView =  {
         let imageView = UIImageView()
         imageView.backgroundColor = .white
-        imageView.layer.borderColor = UIColor.createColor(lightMode: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), darkMode: #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)).cgColor
+        imageView.layer.borderColor = Colors.avatarImageBorderColor
         imageView.contentMode = .scaleAspectFill
         imageView.toAutoLayout()
         return imageView
@@ -30,18 +30,18 @@ final class ProfileHeaderView: UIView {
     
     private lazy var nameLabel: UILabel =  {
         let label = UILabel()
-        label.backgroundColor = UIColor.createColor(lightMode: .white, darkMode: .black)
+        label.backgroundColor = Colors.backgroundColor
         label.text = "Funny Cat"
         label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
-        label.textColor = UIColor.createColor(lightMode: .black, darkMode: .white)
+        label.textColor = Colors.textColor
         label.toAutoLayout()
         return label
     }()
     
     private lazy var statusLabel: UILabel =  {
         let label = UILabel()
-        label.backgroundColor = UIColor.createColor(lightMode: .white, darkMode: .black)
-        label.textColor = UIColor.createColor(lightMode: .gray, darkMode: .lightGray)
+        label.backgroundColor = Colors.backgroundColor
+        label.textColor = Colors.textColor
         label.text = "..."
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         label.toAutoLayout()
@@ -53,7 +53,7 @@ final class ProfileHeaderView: UIView {
         button.backgroundColor = .systemBlue
         button.setTitle(LocalizableStrings.setStatus.rawValue.localize(), for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.layer.shadowColor = UIColor.createColor(lightMode: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), darkMode: #colorLiteral(red: 0.4916521256, green: 0.4916521256, blue: 0.4916521256, alpha: 1)).cgColor
+        button.layer.shadowColor = Colors.showStatusButtonShadowColor
         button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
         button.layer.cornerRadius = 12 //4
         button.layer.shadowOffset = CGSize(width: 4, height: 4)
@@ -65,10 +65,10 @@ final class ProfileHeaderView: UIView {
     
     private lazy var setStatusField: UITextField = {
         let textField = UITextField()
-        textField.backgroundColor = UIColor.createColor(lightMode: .white, darkMode: .black)
+        textField.backgroundColor = Colors.backgroundColor
         textField.font = UIFont.systemFont(ofSize: 15, weight: .regular)
-        textField.textColor = UIColor.createColor(lightMode: .black, darkMode: .white)
-        textField.layer.borderColor = UIColor.createColor(lightMode: .black, darkMode: .white).cgColor
+        textField.textColor = Colors.textColor
+        textField.layer.borderColor = Colors.setStatusFieldBorderColor
         textField.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
         textField.indent(size: 10)
         textField.layer.cornerRadius = 12
@@ -84,7 +84,7 @@ final class ProfileHeaderView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = UIColor.createColor(lightMode: .white, darkMode: .black)
+        self.backgroundColor = Colors.backgroundColor
         setupLayout()
 
     }
@@ -95,21 +95,20 @@ final class ProfileHeaderView: UIView {
     
     // MARK: LightAndDarkTheme
     
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        
-        if previousTraitCollection?.userInterfaceStyle == UIUserInterfaceStyle.light {
-            setStatusField.layer.borderColor = UIColor.white.cgColor
-            avatarImage.layer.borderColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-            showStatusButton.layer.shadowColor = #colorLiteral(red: 0.4916521256, green: 0.4916521256, blue: 0.4916521256, alpha: 1)
-        } else if previousTraitCollection?.userInterfaceStyle == UIUserInterfaceStyle.dark {
-            setStatusField.layer.borderColor = UIColor.black.cgColor
-            avatarImage.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-            showStatusButton.layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+    override func traitCollectionDidChange(_ traitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(traitCollection)
+        if traitCollection?.userInterfaceStyle == UIUserInterfaceStyle.light {
+            setStatusField.layer.borderColor = Colors.setStatusFieldBorderColor(theme: .darkTheme)
+            avatarImage.layer.borderColor = Colors.avatarImageBorderColor(theme: .darkTheme)
+            showStatusButton.layer.shadowColor = Colors.showStatusButtonShadowColor(theme: .darkTheme)
+        } else if traitCollection?.userInterfaceStyle == UIUserInterfaceStyle.dark {
+            setStatusField.layer.borderColor = Colors.setStatusFieldBorderColor(theme: .lightTheme)
+            avatarImage.layer.borderColor = Colors.avatarImageBorderColor(theme: .lightTheme)
+            showStatusButton.layer.shadowColor = Colors.showStatusButtonShadowColor(theme: .lightTheme)
         } else {
-            setStatusField.layer.borderColor = UIColor.black.cgColor
-            avatarImage.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-            showStatusButton.layer.shadowColor = #colorLiteral(red: 0.4916521256, green: 0.4916521256, blue: 0.4916521256, alpha: 1)
+            setStatusField.layer.borderColor = Colors.setStatusFieldBorderColor(theme: .darkTheme)
+            avatarImage.layer.borderColor = Colors.avatarImageBorderColor(theme: .darkTheme)
+            showStatusButton.layer.shadowColor = Colors.showStatusButtonShadowColor(theme: .darkTheme)
         }
         
     }

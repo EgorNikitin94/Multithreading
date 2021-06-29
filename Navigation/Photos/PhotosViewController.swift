@@ -41,7 +41,7 @@ class PhotosViewController: UIViewController {
         super.viewDidLoad()
         
         setupViews()
-        view.backgroundColor = UIColor.createColor(lightMode: .white, darkMode: .black)
+        view.backgroundColor = Colors.backgroundColor
         self.navigationItem.title = LocalizableStrings.photoGallery.rawValue.localize()
     }
     
