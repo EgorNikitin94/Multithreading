@@ -26,7 +26,7 @@ final class PostTableViewCell: UITableViewCell {
         let author = UILabel()
         author.toAutoLayout()
         author.font = UIFont.systemFont(ofSize: 20, weight: .bold)
-        author.textColor = .black
+        author.textColor = Colors.textColor
         author.numberOfLines = 2
         return author
     }()
@@ -43,7 +43,7 @@ final class PostTableViewCell: UITableViewCell {
     private lazy var postImageView: UIImageView = {
         let image = UIImageView()
         image.toAutoLayout()
-        image.backgroundColor = .black
+        image.backgroundColor = Colors.backgroundColor
         image.contentMode = .scaleAspectFit
         return image
     }()
@@ -52,7 +52,7 @@ final class PostTableViewCell: UITableViewCell {
         let likes = UILabel()
         likes.toAutoLayout()
         likes.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        likes.textColor = .black
+        likes.textColor = Colors.textColor
         return likes
     }()
     
@@ -60,7 +60,7 @@ final class PostTableViewCell: UITableViewCell {
         let views = UILabel()
         views.toAutoLayout()
         views.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        views.textColor = .black
+        views.textColor = Colors.textColor
         views.textAlignment = .right
         return views
     }()
@@ -70,6 +70,10 @@ final class PostTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
         setupLayout()
+        self.backgroundColor = Colors.backgroundColor
+        let doubleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(doubleTap))
+        doubleTapGestureRecognizer.numberOfTapsRequired = 2
+        contentView.addGestureRecognizer(doubleTapGestureRecognizer)
         
     }
     
@@ -77,7 +81,28 @@ final class PostTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: Actions
+    @objc private func doubleTap() {
+        print("doubleTap")
+        CoreDataStack.sharedInstance.createObject(author: authorLabel.text,
+                                                  description: descriptionLabel.text,
+                                                  image: postImageView.image?.jpegData(compressionQuality: 1),
+                                                  likes: likesLabel.text,
+                                                  views: viewsLabel.text )
+
+    }
+    
     //MARK: SETUP
+    
+    func configure(_ favoritPost: FavoritPost) {
+        authorLabel.text = favoritPost.author
+        descriptionLabel.text = favoritPost.desc
+        if let image = favoritPost.image {
+            postImageView.image = UIImage(data: image)
+        }
+        likesLabel.text = favoritPost.likes
+        viewsLabel.text = favoritPost.views
+    }
     
     private func setupLayout() {
         contentView.addSubview(authorLabel)

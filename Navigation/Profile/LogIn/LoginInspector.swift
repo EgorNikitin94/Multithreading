@@ -7,51 +7,94 @@
 //
 
 import Foundation
-import FirebaseAuth
+import RealmSwift
+
+@objcMembers class CachedUser: Object {
+    dynamic var id: String?
+    dynamic var email: String?
+    dynamic var password: String?
+    
+    override static func primaryKey() -> String? {
+        return "id"
+    }
+}
+
 
 final class LoginInspector: LoginViewControllerDelegate {
     
-    func checkUser(userEmail: String, userPassword: String, completion: @escaping (Bool) -> Void) {
-        
-        Auth.auth().signIn(withEmail: userEmail, password: userPassword) { (authData, error) in
-            
-            if error != nil {
-                print(error.debugDescription)
+    
+    private var realm: Realm? {
+        let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let config = Realm.Configuration(fileURL: documentsPath.appendingPathComponent("users.realm"), encryptionKey: getKey())
+        return try? Realm(configuration: config)
+    }
+    
+    func createUser(user: User, completion: @escaping (Bool) -> Void) {
+        let cachedUser = CachedUser()
+        cachedUser.id = user.id
+        cachedUser.email = user.email
+        cachedUser.password = user.password
+        do{
+            try realm?.write {
+                realm?.add(cachedUser)
             }
-            
-            if authData == nil {
-                completion(false)
-            } else {
-                completion(true)
-            }
+            completion(true)
+        } catch {
+            print(error.localizedDescription)
+            completion(false)
+        }
+         
+    }
+    
+    func checkUser(completion: @escaping (Bool, String?) -> Void) {
+        let users = getUsers()
+        if users.isEmpty {
+            completion(false, nil)
+        } else {
+            completion(true, users.first?.email)
         }
     }
     
-    func createUser(userEmail: String, userPassword: String, completion: @escaping (Bool) -> Void) {
-        
-        Auth.auth().createUser(withEmail: userEmail, password: userPassword) { (authData, error) in
-            
-            if error != nil {
-                print(error.debugDescription)
-            }
-            
-            if authData == nil {
-                completion(false)
-            } else {
-                completion(true)
-            }
-        }
+    private func getUsers() -> [User] {
+        return realm?.objects(CachedUser.self).compactMap {
+            guard let id = $0.id, let email = $0.email, let password = $0.password else { return nil }
+            return User(id: id, email: email, password: password)
+        } ?? []
     }
     
-    func signOutUser(completion: @escaping (Error?) -> Void) {
-        if Auth.auth().currentUser != nil {
-            do {
-              try FirebaseAuth.Auth.auth().signOut()
-            } catch let signOutError {
-                print (signOutError.localizedDescription)
-                completion(signOutError)
-            }
+    private func getKey() -> Data {
+  
+        let keychainIdentifier = "io.Realm.EncryptionExampleKey"
+        let keychainIdentifierData = keychainIdentifier.data(using: String.Encoding.utf8, allowLossyConversion: false)!
+
+        var query: [NSString: AnyObject] = [
+            kSecClass: kSecClassKey,
+            kSecAttrApplicationTag: keychainIdentifierData as AnyObject,
+            kSecAttrKeySizeInBits: 512 as AnyObject,
+            kSecReturnData: true as AnyObject
+        ]
+        
+        var dataTypeRef: AnyObject?
+        var status = withUnsafeMutablePointer(to: &dataTypeRef) { SecItemCopyMatching(query as CFDictionary, UnsafeMutablePointer($0)) }
+        if status == errSecSuccess {
+            return dataTypeRef as! Data
         }
+        
+        var key = Data(count: 64)
+        key.withUnsafeMutableBytes({ (pointer: UnsafeMutableRawBufferPointer) in
+            let result = SecRandomCopyBytes(kSecRandomDefault, 64, pointer.baseAddress!)
+            assert(result == 0, "Failed to get random bytes")
+        })
+        
+        query = [
+            kSecClass: kSecClassKey,
+            kSecAttrApplicationTag: keychainIdentifierData as AnyObject,
+            kSecAttrKeySizeInBits: 512 as AnyObject,
+            kSecValueData: key as AnyObject
+        ]
+        status = SecItemAdd(query as CFDictionary, nil)
+        assert(status == errSecSuccess, "Failed to insert the new key in the keychain")
+        return key
     }
     
 }

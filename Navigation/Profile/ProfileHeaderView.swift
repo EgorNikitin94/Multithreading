@@ -22,7 +22,7 @@ final class ProfileHeaderView: UIView {
     private lazy var avatarImage: UIImageView =  {
         let imageView = UIImageView()
         imageView.backgroundColor = .white
-        imageView.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        imageView.layer.borderColor = Colors.avatarImageBorderColor
         imageView.contentMode = .scaleAspectFill
         imageView.toAutoLayout()
         return imageView
@@ -30,18 +30,18 @@ final class ProfileHeaderView: UIView {
     
     private lazy var nameLabel: UILabel =  {
         let label = UILabel()
-        label.backgroundColor = .white
+        label.backgroundColor = Colors.backgroundColor
         label.text = "Funny Cat"
         label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
-        label.textColor = .black
+        label.textColor = Colors.textColor
         label.toAutoLayout()
         return label
     }()
     
     private lazy var statusLabel: UILabel =  {
         let label = UILabel()
-        label.backgroundColor = .white
-        label.textColor = .gray
+        label.backgroundColor = Colors.backgroundColor
+        label.textColor = Colors.textColor
         label.text = "..."
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         label.toAutoLayout()
@@ -51,9 +51,9 @@ final class ProfileHeaderView: UIView {
     private lazy var showStatusButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .systemBlue
-        button.setTitle("Set status", for: .normal)
+        button.setTitle(LocalizableStrings.setStatus.rawValue.localize(), for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        button.layer.shadowColor = Colors.showStatusButtonShadowColor
         button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
         button.layer.cornerRadius = 12 //4
         button.layer.shadowOffset = CGSize(width: 4, height: 4)
@@ -65,10 +65,10 @@ final class ProfileHeaderView: UIView {
     
     private lazy var setStatusField: UITextField = {
         let textField = UITextField()
-        textField.backgroundColor = .white
+        textField.backgroundColor = Colors.backgroundColor
         textField.font = UIFont.systemFont(ofSize: 15, weight: .regular)
-        textField.textColor = .black
-        textField.layer.borderColor = UIColor.black.cgColor
+        textField.textColor = Colors.textColor
+        textField.layer.borderColor = Colors.setStatusFieldBorderColor
         textField.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
         textField.indent(size: 10)
         textField.layer.cornerRadius = 12
@@ -82,16 +82,35 @@ final class ProfileHeaderView: UIView {
     
     // MARK: initializer
     
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = .white
+        self.backgroundColor = Colors.backgroundColor
         setupLayout()
 
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: LightAndDarkTheme
+    
+    override func traitCollectionDidChange(_ traitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(traitCollection)
+        if traitCollection?.userInterfaceStyle == UIUserInterfaceStyle.light {
+            setStatusField.layer.borderColor = Colors.setStatusFieldBorderColor(theme: .darkTheme)
+            avatarImage.layer.borderColor = Colors.avatarImageBorderColor(theme: .darkTheme)
+            showStatusButton.layer.shadowColor = Colors.showStatusButtonShadowColor(theme: .darkTheme)
+        } else if traitCollection?.userInterfaceStyle == UIUserInterfaceStyle.dark {
+            setStatusField.layer.borderColor = Colors.setStatusFieldBorderColor(theme: .lightTheme)
+            avatarImage.layer.borderColor = Colors.avatarImageBorderColor(theme: .lightTheme)
+            showStatusButton.layer.shadowColor = Colors.showStatusButtonShadowColor(theme: .lightTheme)
+        } else {
+            setStatusField.layer.borderColor = Colors.setStatusFieldBorderColor(theme: .darkTheme)
+            avatarImage.layer.borderColor = Colors.avatarImageBorderColor(theme: .darkTheme)
+            showStatusButton.layer.shadowColor = Colors.showStatusButtonShadowColor(theme: .darkTheme)
+        }
+        
     }
     
     

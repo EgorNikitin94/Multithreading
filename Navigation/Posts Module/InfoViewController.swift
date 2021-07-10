@@ -34,7 +34,7 @@ final class InfoViewController: UIViewController {
     
     private let showAlertButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Show Alert", for: .normal)
+        button.setTitle(LocalizableStrings.showAlert.rawValue.localize(), for: .normal)
         button.setTitleColor(.black, for: .normal)
         button.addTarget(self, action: #selector(showAlert), for: .touchUpInside)
         button.toAutoLayout()
@@ -43,6 +43,7 @@ final class InfoViewController: UIViewController {
     
     private let titleLabel: UILabel = {
         $0.font = UIFont.systemFont(ofSize: 14)
+        $0.textColor = .black
         $0.textAlignment = .center
         $0.toAutoLayout()
         return $0
@@ -50,6 +51,7 @@ final class InfoViewController: UIViewController {
     
     private let orbitalPeriodLabel: UILabel = {
         $0.font = UIFont.systemFont(ofSize: 20)
+        $0.textColor = .black
         $0.textAlignment = .center
         $0.toAutoLayout()
         return $0
@@ -158,11 +160,11 @@ final class InfoViewController: UIViewController {
     }
     
     @objc private func showAlert() {
-        let alertController = UIAlertController(title: "Удалить пост?", message: "Пост нельзя будет восстановить", preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: "Отмена", style: .default) { _ in
+        let alertController = UIAlertController(title: LocalizableStrings.deletePost.rawValue.localize(), message: LocalizableStrings.postCannotBeRestored.rawValue.localize(), preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: LocalizableStrings.cancel.rawValue.localize(), style: .default) { _ in
             print("Отмена")
         }
-        let deleteAction = UIAlertAction(title: "Удалить", style: .destructive) { _ in
+        let deleteAction = UIAlertAction(title: LocalizableStrings.delete.rawValue.localize(), style: .destructive) { _ in
             print("Удалить")
         }
         alertController.addAction(cancelAction)

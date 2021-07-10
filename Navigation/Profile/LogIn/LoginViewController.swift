@@ -1,17 +1,16 @@
 //
-//  LogInViewController.swift
+//  LoginViewController1.swift
 //  Navigation
 //
-//  Created by Егор Никитин on 11.11.2020.
-//  Copyright © 2020 Artem Novichkov. All rights reserved.
+//  Created by Егор Никитин on 09.04.2021.
+//  Copyright © 2021 Artem Novichkov. All rights reserved.
 //
 
 import UIKit
 
 protocol LoginViewControllerDelegate: AnyObject {
-    func checkUser(userEmail: String, userPassword: String, completion: @escaping (Bool) -> Void)
-    func createUser(userEmail: String, userPassword: String, completion: @escaping (Bool) -> Void)
-    func signOutUser(completion: @escaping (Error?) -> Void)
+    func createUser(user: User, completion: @escaping (Bool) -> Void)
+    func checkUser(completion: @escaping (Bool, String?) -> Void)
 }
 
 final class LogInViewController: UIViewController {
@@ -32,31 +31,31 @@ final class LogInViewController: UIViewController {
     private lazy var logInTextField: UITextField = {
         let logIn = UITextField()
         logIn.toAutoLayout()
-        logIn.backgroundColor = #colorLiteral(red: 0.8534691637, green: 0.870538547, blue: 0.870538547, alpha: 1)
-        logIn.textColor = .black
+        logIn.backgroundColor = Colors.textViewBackgroundColor
+        logIn.textColor = Colors.textColor
         logIn.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        logIn.layer.borderColor = UIColor.lightGray.cgColor
+        logIn.layer.borderColor = Colors.textViewBorderColor
         logIn.layer.borderWidth = 0.25
         logIn.tintColor = Colors.colorSet
         logIn.autocapitalizationType = .none
         logIn.indent(size: 10)
-        logIn.placeholder = "Email or phone"
+        logIn.placeholder = LocalizableStrings.emailOrPhone.rawValue.localize()
         return logIn
     }()
     
     private lazy var passwordTextField: UITextField = {
         let password = UITextField()
         password.toAutoLayout()
-        password.backgroundColor = #colorLiteral(red: 0.8534691637, green: 0.870538547, blue: 0.870538547, alpha: 1)
+        password.backgroundColor = Colors.textViewBackgroundColor
         password.isSecureTextEntry = true
-        password.textColor = .black
+        password.textColor = Colors.textColor
         password.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        password.layer.borderColor = UIColor.lightGray.cgColor
+        password.layer.borderColor = Colors.textViewBorderColor
         password.layer.borderWidth = 0.25
         password.tintColor = Colors.colorSet
         password.autocapitalizationType = .none
         password.indent(size: 10)
-        password.placeholder = "Password"
+        password.placeholder = LocalizableStrings.password.rawValue.localize()
         return password
     }()
     
@@ -65,24 +64,9 @@ final class LogInViewController: UIViewController {
         inputFields.toAutoLayout()
         inputFields.layer.cornerRadius = 10
         inputFields.layer.masksToBounds = true
-        inputFields.layer.borderColor = UIColor.lightGray.cgColor
+        inputFields.layer.borderColor = Colors.textViewBorderColor
         inputFields.layer.borderWidth = 0.5
         return inputFields
-    }()
-    
-    private lazy var logInButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.toAutoLayout()
-        button.setBackgroundImage(#imageLiteral(resourceName: "blue_pixel").alpha(1), for: .normal)
-        button.setBackgroundImage(#imageLiteral(resourceName: "blue_pixel").alpha(0.8), for: .selected)
-        button.setBackgroundImage(#imageLiteral(resourceName: "blue_pixel").alpha(0.8), for: .highlighted)
-        button.setBackgroundImage(#imageLiteral(resourceName: "blue_pixel").alpha(0.8), for: .disabled)
-        button.setTitle("Log In", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 10
-        button.layer.masksToBounds = true
-        button.addTarget(self, action: #selector (goToProfileViewController), for: .touchUpInside)
-        return button
     }()
     
     private lazy var createProfileButton: UIButton = {
@@ -92,7 +76,7 @@ final class LogInViewController: UIViewController {
         button.setBackgroundImage(#imageLiteral(resourceName: "blue_pixel").alpha(0.8), for: .selected)
         button.setBackgroundImage(#imageLiteral(resourceName: "blue_pixel").alpha(0.8), for: .highlighted)
         button.setBackgroundImage(#imageLiteral(resourceName: "blue_pixel").alpha(0.8), for: .disabled)
-        button.setTitle("Create profile", for: .normal)
+        button.setTitle(LocalizableStrings.createProfile.rawValue.localize(), for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 10
         button.layer.masksToBounds = true
@@ -100,7 +84,7 @@ final class LogInViewController: UIViewController {
         return button
     }()
     
-    private let contentView: UIView = {
+    private lazy var contentView: UIView = {
         let view = UIView()
         view.toAutoLayout()
         return view
@@ -115,7 +99,7 @@ final class LogInViewController: UIViewController {
     // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = Colors.backgroundColor
         setupLayout()
         self.navigationController?.navigationBar.isHidden = true
         
@@ -130,12 +114,22 @@ final class LogInViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super .viewWillAppear(animated)
         
-        delegate?.signOutUser(completion: { [weak self] (error) in
+        delegate?.checkUser() { [weak self] (result, email) in
             guard let strongSelf = self else { return }
-            if error != nil {
-                strongSelf.showAlertController(message: "Не удалось выйти из аккаунта, перезагрузите пожалуйста приложение")
+            if result {
+
+                let alertController = UIAlertController(title: LocalizableStrings.welcome.rawValue.localize(), message: email ?? LocalizableStrings.user.rawValue.localize(), preferredStyle: .alert)
+                let okAction = UIAlertAction(title: LocalizableStrings.sighIn.rawValue.localize(), style: .default) { _ in
+                    guard let navigationVC = strongSelf.navigationController else { return }
+                    let coordinator = ChildCoordinator(navigator: navigationVC)
+                    coordinator.makeProfileModule(coordinator: coordinator)
+                    strongSelf.view.endEditing(true)
+                }
+                alertController.addAction(okAction)
+                strongSelf.present(alertController, animated: true, completion: nil)
+
             }
-        })
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -161,19 +155,20 @@ final class LogInViewController: UIViewController {
     
     //Mark: - Actions
     
-    @objc private func goToProfileViewController() {
+    
+    @objc private func createUser() {
         if logInTextField.text?.isEmpty == true && passwordTextField.text?.isEmpty == true {
-            showAlertController(message: "Заполните все поля пожуйста!")
-            
+            showAlertController(message: LocalizableStrings.pleaseFillInAllTheFields.rawValue.localize())
+
         } else if logInTextField.text?.isEmpty == true {
-            showAlertController(message: "Заполните поле Login!")
-            
+            showAlertController(message: LocalizableStrings.fillInTheLoginField.rawValue.localize())
+
         } else if  passwordTextField.text?.isEmpty == true {
-            showAlertController(message: "Заполните поле Password!")
-            
+            showAlertController(message: LocalizableStrings.fillInThePasswordField.rawValue.localize())
+
         } else {
-            delegate?.checkUser(userEmail: logInTextField.text!, userPassword: passwordTextField.text!, completion: { [weak self] (result) in
-                
+            let user = User(id: UUID().uuidString ,email: logInTextField.text ?? "", password: passwordTextField.text ?? "")
+            delegate?.createUser(user: user, completion: { [weak self] (result) in
                 guard let strongSelf = self else { return }
                 if result {
                     guard let navigationVC = strongSelf.navigationController else { return }
@@ -181,36 +176,13 @@ final class LogInViewController: UIViewController {
                     coordinator.makeProfileModule(coordinator: coordinator)
                     strongSelf.view.endEditing(true)
                 } else {
-                    strongSelf.showAlertController(message: "Данные введены не верно или пользователя не существует")
+                    strongSelf.showAlertController(message: LocalizableStrings.errorWhileCreatingNewUser.rawValue.localize())
                 }
             })
         }
     }
     
-    @objc private func createUser() {
-        if logInTextField.text?.isEmpty == true && passwordTextField.text?.isEmpty == true {
-            showAlertController(message: "Заполните все поля пожуйста!")
-            
-        } else if logInTextField.text?.isEmpty == true {
-            showAlertController(message: "Заполните поле Login!")
-            
-        } else if  passwordTextField.text?.isEmpty == true {
-            showAlertController(message: "Заполните поле Password!")
-            
-        } else {
-            delegate?.createUser(userEmail: logInTextField.text!, userPassword: passwordTextField.text!, completion: { [weak self] (result) in
-                
-                guard let strongSelf = self else { return }
-                if result {
-                    strongSelf.showAlertController(title: "Успешно", message: "Новый пользователь создан успешно")
-                } else {
-                    strongSelf.showAlertController(message: "Ошибка при создании нового пользователя")
-                }
-            })
-        }
-    }
-    
-    private func showAlertController(title: String = "Внимание!" ,message: String) {
+    private func showAlertController(title: String = LocalizableStrings.attention.rawValue.localize() ,message: String) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let okAction = UIAlertAction(title: "ОК", style: .default) { _ in
             print("ОК")
@@ -224,6 +196,24 @@ final class LogInViewController: UIViewController {
         
     }
     
+    override func traitCollectionDidChange(_ traitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(traitCollection)
+        if traitCollection?.userInterfaceStyle == UIUserInterfaceStyle.light {
+            logInTextField.layer.borderColor = Colors.textViewBorderColor(theme: .darkTheme)
+            passwordTextField.layer.borderColor = Colors.textViewBorderColor(theme: .darkTheme)
+            inputFieldsView.layer.borderColor = Colors.textViewBorderColor(theme: .darkTheme)
+        } else if traitCollection?.userInterfaceStyle == UIUserInterfaceStyle.dark {
+            logInTextField.layer.borderColor = Colors.textViewBorderColor(theme: .lightTheme)
+            passwordTextField.layer.borderColor = Colors.textViewBorderColor(theme: .lightTheme)
+            inputFieldsView.layer.borderColor = Colors.textViewBorderColor(theme: .lightTheme)
+        } else {
+            logInTextField.layer.borderColor = Colors.textViewBorderColor(theme: .darkTheme)
+            passwordTextField.layer.borderColor = Colors.textViewBorderColor(theme: .darkTheme)
+            inputFieldsView.layer.borderColor = Colors.textViewBorderColor(theme: .darkTheme)
+        }
+        
+    }
+    
     // MARK: Setup layout
     private func setupLayout() {
         view.addSubview(scrollView)
@@ -231,7 +221,6 @@ final class LogInViewController: UIViewController {
         
         contentView.addSubview(logoImage)
         contentView.addSubview(inputFieldsView)
-        contentView.addSubview(logInButton)
         contentView.addSubview(createProfileButton)
         
         inputFieldsView.addSubview(logInTextField)
@@ -270,12 +259,7 @@ final class LogInViewController: UIViewController {
             inputFieldsView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             inputFieldsView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             
-            logInButton.topAnchor.constraint(equalTo: inputFieldsView.bottomAnchor, constant: 16),
-            logInButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            logInButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            logInButton.heightAnchor.constraint(equalToConstant: 50),
-            
-            createProfileButton.topAnchor.constraint(equalTo: logInButton.bottomAnchor, constant: 16),
+            createProfileButton.topAnchor.constraint(equalTo: inputFieldsView.bottomAnchor, constant: 16),
             createProfileButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             createProfileButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             createProfileButton.heightAnchor.constraint(equalToConstant: 50),
@@ -305,6 +289,5 @@ extension UIImage {
         return newImage!
     }
 }
-
 
 

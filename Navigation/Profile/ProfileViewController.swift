@@ -128,6 +128,7 @@ extension ProfileViewController: UITableViewDataSource {
             
             let photos = viewModel.configurePhotos()
             configurePhotosTableViewCell(cell: cellOne, images: photos)
+            cellOne.selectionStyle = .none
             cell = cellOne
         } else {
             let cellTwo: PostTableViewCell = tableView.dequeueReusableCell(withIdentifier: reuseID, for: indexPath) as! PostTableViewCell
@@ -146,18 +147,16 @@ extension ProfileViewController: UITableViewDataSource {
 extension ProfileViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let index = [0, 0]
-        if indexPath.elementsEqual(index) {
+        if indexPath.section == 0 {
             let photosViewController = PhotosViewController(coordinator: coordinator)
             coordinator.push(viewController: photosViewController)
             
-        }
+        } 
         
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = (section == 0 ? profileHeaderView : nil)
-        
         return header
     }
     
