@@ -10,6 +10,8 @@ import UIKit
 
 final class InfoViewController: UIViewController {
     
+    var coordinator: BaseCoordinator?
+    
     private let apiURL: URL? = URL(string: "https://jsonplaceholder.typicode.com/todos/6")
     
     private let starWarsPlanetsApiURL: URL? = URL(string: "https://swapi.dev/api/planets/1/")
@@ -29,8 +31,6 @@ final class InfoViewController: UIViewController {
     }
     
     private let cellID = "cellIDInfoVC"
-    
-    private let coordinator: ChildCoordinator
     
     private let showAlertButton: UIButton = {
         let button = UIButton()
@@ -61,17 +61,6 @@ final class InfoViewController: UIViewController {
         $0.toAutoLayout()
         return $0
     }(UITableView())
-    
-    // Mark: - init
-    
-    init(coordinator: ChildCoordinator) {
-        self.coordinator = coordinator
-        super .init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

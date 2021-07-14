@@ -14,6 +14,8 @@ final class FavoritesPostsViewController: UIViewController {
     
     // MARK: Properties
     
+    var coordinator: BaseCoordinator?
+    
     private var reuseID: String = "favoritPostReuseID"
     
     private let tableView = UITableView(frame: .zero, style: .grouped)

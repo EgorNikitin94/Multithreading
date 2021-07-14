@@ -18,7 +18,7 @@ final class ProfileViewController: UIViewController {
     
     // MARK: Properties
     
-    private let coordinator: ChildCoordinator
+    var coordinator: BaseCoordinator?
     
     private let viewModel: ProfileViewControllerOutput
     
@@ -42,8 +42,7 @@ final class ProfileViewController: UIViewController {
     
     // Mark: - init
     
-    init(coordinator: ChildCoordinator, viewModel: ProfileViewModel) {
-        self.coordinator = coordinator
+    init(viewModel: ProfileViewModel) {
         self.viewModel = viewModel
         super .init(nibName: nil, bundle: nil)
     }
@@ -148,10 +147,10 @@ extension ProfileViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0 {
-            let photosViewController = PhotosViewController(coordinator: coordinator)
-            coordinator.push(viewController: photosViewController)
-            
-        } 
+            coordinator?.showNextViewController()
+        }  else {
+            coordinator?.showPost?(number: indexPath.row)
+        }
         
     }
     
@@ -173,5 +172,6 @@ extension ProfileViewController: UITableViewDelegate {
         let heightForFooter = (section == 0 ? CGFloat(8) : .zero)
         return heightForFooter
     }
+
 }
 

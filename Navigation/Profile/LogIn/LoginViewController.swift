@@ -17,6 +17,8 @@ final class LogInViewController: UIViewController {
     
     // MARK: Properties
     
+    var coordinator: BaseCoordinator?
+    
     private let logInInspector = LoginInspector()
     
     weak var delegate: LoginViewControllerDelegate?
@@ -120,9 +122,7 @@ final class LogInViewController: UIViewController {
 
                 let alertController = UIAlertController(title: LocalizableStrings.welcome.rawValue.localize(), message: email ?? LocalizableStrings.user.rawValue.localize(), preferredStyle: .alert)
                 let okAction = UIAlertAction(title: LocalizableStrings.sighIn.rawValue.localize(), style: .default) { _ in
-                    guard let navigationVC = strongSelf.navigationController else { return }
-                    let coordinator = ChildCoordinator(navigator: navigationVC)
-                    coordinator.makeProfileModule(coordinator: coordinator)
+                    strongSelf.coordinator?.showNextViewController()
                     strongSelf.view.endEditing(true)
                 }
                 alertController.addAction(okAction)
@@ -171,9 +171,7 @@ final class LogInViewController: UIViewController {
             delegate?.createUser(user: user, completion: { [weak self] (result) in
                 guard let strongSelf = self else { return }
                 if result {
-                    guard let navigationVC = strongSelf.navigationController else { return }
-                    let coordinator = ChildCoordinator(navigator: navigationVC)
-                    coordinator.makeProfileModule(coordinator: coordinator)
+                    strongSelf.coordinator?.showNextViewController()
                     strongSelf.view.endEditing(true)
                 } else {
                     strongSelf.showAlertController(message: LocalizableStrings.errorWhileCreatingNewUser.rawValue.localize())
