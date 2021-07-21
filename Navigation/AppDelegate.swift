@@ -41,7 +41,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window = UIWindow(frame: UIScreen.main.bounds)
         
-        window?.rootViewController = AppCoordinator.shared.rootController
+        let appCoordinator = AppCoordinator()
+        
+        appCoordinator.start()
+        
+        window?.rootViewController = appCoordinator.navigator
         
         window?.makeKeyAndVisible()
         

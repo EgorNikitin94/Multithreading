@@ -13,14 +13,12 @@ final class FeedViewController: UIViewController {
     
     //Mark: -  Properties
     
+    var coordinator: BaseCoordinator?
+    
     private lazy var container: ContainerView = {
         $0.onTap = { [weak self] in
-            guard let navigationVC = self?.navigationController else {return}
-            let coordinator = CoordinatorsFactory.makeChildCoordinator(navigator: navigationVC)
-            let postVC = PostViewController(coordinator: coordinator)
-            coordinator.push(viewController: postVC)
+            self?.coordinator?.showNextViewController()
         }
-        
         return $0
     }(ContainerView())
     

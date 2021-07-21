@@ -12,7 +12,7 @@ class PhotosViewController: UIViewController {
     
     //MARK: - Properties
     
-    private let coordinator: ChildCoordinator
+    var coordinator: BaseCoordinator?
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -24,17 +24,6 @@ class PhotosViewController: UIViewController {
         cv.toAutoLayout()
         return cv
     }()
-    
-    // MARK: - init
-    
-    init(coordinator: ChildCoordinator) {
-        self.coordinator = coordinator
-        super .init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -51,7 +40,8 @@ class PhotosViewController: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        super .viewWillDisappear(animated)
+        super.viewWillDisappear(animated)
+        coordinator?.didFinishCoordinator()
         self.navigationController?.navigationBar.isHidden = true
     }
     

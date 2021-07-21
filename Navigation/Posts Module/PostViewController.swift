@@ -10,7 +10,7 @@ import UIKit
 
 final class PostViewController: UIViewController {
     
-    private let coordinator: ChildCoordinator
+    var coordinator: BaseCoordinator?
     
     private lazy var editButton: UIBarButtonItem = {
         var button = UIBarButtonItem()
@@ -21,17 +21,6 @@ final class PostViewController: UIViewController {
         return button
     }()
     
-    // Mark: - init
-    
-    init(coordinator: ChildCoordinator) {
-        self.coordinator = coordinator
-        super .init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .red
@@ -40,9 +29,7 @@ final class PostViewController: UIViewController {
     }
     
     @objc private func tapButton() {
-        let infoViewController = InfoViewController(coordinator: coordinator)
-        coordinator.present(viewController: infoViewController)
-        
+        coordinator?.showNextViewController()
     }
 }
 
