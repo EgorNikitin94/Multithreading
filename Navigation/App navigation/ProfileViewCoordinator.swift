@@ -16,6 +16,14 @@ final class ProfileViewCoordinator: BaseCoordinator {
     
     var childCoordinators: [BaseCoordinator] = []
     
+    private(set) var isCalledCoordinatorStart = false
+    
+    private(set) var postNumber = -1
+    
+    private(set) var post: Post!
+    
+    private(set) var isCalledShowNextViewController = false
+    
     init(controller: UINavigationController, parent: BaseCoordinator) {
         self.navigator = controller
         self.parentCoordinator = parent
@@ -26,6 +34,7 @@ final class ProfileViewCoordinator: BaseCoordinator {
         let profileViewController = ProfileViewController(viewModel: viewModel)
         profileViewController.coordinator = self
         navigator.pushViewController(profileViewController, animated: true)
+        isCalledCoordinatorStart = true
     }
     
     func showNextViewController() {
@@ -44,6 +53,12 @@ final class ProfileViewCoordinator: BaseCoordinator {
     
     func showPost(number: Int) {
         print("Open post detail: №\(number) with model \(Storage.news[number])")
+        postNumber = number
+        post = Storage.news[number]
+    }
+    
+    func showPostInfo() {
+        isCalledShowNextViewController = true
     }
     
 }

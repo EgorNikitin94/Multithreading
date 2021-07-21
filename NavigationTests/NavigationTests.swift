@@ -7,10 +7,11 @@
 //
 
 import XCTest
+@testable import Navigation
 
 class NavigationTests: XCTestCase {
     
-    var postViewCoordinatorSpy: PostCoordinatorSpy!
+    var profileViewCoordinator: ProfileViewCoordinator!
     
     var post: Post!
     
@@ -18,32 +19,32 @@ class NavigationTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        postViewCoordinatorSpy = PostCoordinatorSpy(navigator: UINavigationController())
+        profileViewCoordinator = ProfileViewCoordinator(controller: UINavigationController(), parent: LoginViewCoordinator(navigator: UINavigationController()))
         post = Post(author: "Apple News", description: "Apple представила новые Mac на собственном процессоре M1", image: "Macbook", likes: 9999, views: 99999)
     }
     
     override func tearDown() {
-        postViewCoordinatorSpy = nil
+        profileViewCoordinator = nil
         super.tearDown()
     }
     
     func test_coordinator_start() {
-        postViewCoordinatorSpy.start()
-        XCTAssertTrue(postViewCoordinatorSpy.isCalledCoordinatorStart, "Not started coordinator")
+        profileViewCoordinator.start()
+        XCTAssertTrue(profileViewCoordinator.isCalledCoordinatorStart, "Not started coordinator")
     }
     
     func test_coordinator_show_post() {
-        postViewCoordinatorSpy.showPost(number: postNumber)
-        XCTAssertEqual(postViewCoordinatorSpy.postNumber, postNumber)
-        XCTAssertEqual(postViewCoordinatorSpy.post.author, post.author)
-        XCTAssertEqual(postViewCoordinatorSpy.post.description, post.description)
-        XCTAssertEqual(postViewCoordinatorSpy.post.likes, post.likes)
-        XCTAssertEqual(postViewCoordinatorSpy.post.views, post.views)
+        profileViewCoordinator.showPost(number: postNumber)
+        XCTAssertEqual(profileViewCoordinator.postNumber, postNumber)
+        XCTAssertEqual(profileViewCoordinator.post.author, post.author)
+        XCTAssertEqual(profileViewCoordinator.post.description, post.description)
+        XCTAssertEqual(profileViewCoordinator.post.likes, post.likes)
+        XCTAssertEqual(profileViewCoordinator.post.views, post.views)
     }
     
     func test_coordinator_show_post_info() {
-        postViewCoordinatorSpy.showPostInfo()
-        XCTAssertTrue(postViewCoordinatorSpy.isCalledShowNextViewController, "Not called showNextViewController")
+        profileViewCoordinator.showPostInfo()
+        XCTAssertTrue(profileViewCoordinator.isCalledShowNextViewController, "Not called showNextViewController")
     }
 
 }
