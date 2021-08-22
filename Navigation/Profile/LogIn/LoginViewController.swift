@@ -19,6 +19,8 @@ final class LogInViewController: UIViewController {
     
     private let logInInspector = LoginInspector()
     
+    private let localAuthorizationService: LocalAuthorizationServiceProtocol = LocalAuthorizationService()
+    
     weak var delegate: LoginViewControllerDelegate?
     
     private lazy var logoImage: UIImageView = {
@@ -81,6 +83,21 @@ final class LogInViewController: UIViewController {
         button.layer.cornerRadius = 10
         button.layer.masksToBounds = true
         button.addTarget(self, action: #selector (createUser), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var biometrySignInButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.toAutoLayout()
+        button.setBackgroundImage(#imageLiteral(resourceName: "blue_pixel").alpha(1), for: .normal)
+        button.setBackgroundImage(#imageLiteral(resourceName: "blue_pixel").alpha(0.8), for: .selected)
+        button.setBackgroundImage(#imageLiteral(resourceName: "blue_pixel").alpha(0.8), for: .highlighted)
+        button.setBackgroundImage(#imageLiteral(resourceName: "blue_pixel").alpha(0.8), for: .disabled)
+        button.setTitle("FaceID or TouchID", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 10
+        button.layer.masksToBounds = true
+        button.addTarget(self, action: #selector (biometryButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -191,6 +208,22 @@ final class LogInViewController: UIViewController {
         self.present(alertController, animated: true, completion: nil)
     }
     
+    @objc private func biometryButtonTapped() {
+        localAuthorizationService.authorizePossible { [weak self] (possible) in
+            guard let strongSelf = self else { return }
+            DispatchQueue.main.async {
+                if possible {
+                    guard let navigationVC = strongSelf.navigationController else { return }
+                    let coordinator = ChildCoordinator(navigator: navigationVC)
+                    coordinator.makeProfileModule(coordinator: coordinator)
+                    strongSelf.view.endEditing(true)
+                } else {
+                    strongSelf.showAlertController(title: "Biometry error", message: "Your device maybe have't FaceID or TouchID")
+                }
+            }
+        }
+    }
+    
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         
@@ -222,6 +255,7 @@ final class LogInViewController: UIViewController {
         contentView.addSubview(logoImage)
         contentView.addSubview(inputFieldsView)
         contentView.addSubview(createProfileButton)
+        contentView.addSubview(biometrySignInButton)
         
         inputFieldsView.addSubview(logInTextField)
         inputFieldsView.addSubview(passwordTextField)
@@ -263,8 +297,12 @@ final class LogInViewController: UIViewController {
             createProfileButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             createProfileButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             createProfileButton.heightAnchor.constraint(equalToConstant: 50),
-            createProfileButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
             
+            biometrySignInButton.topAnchor.constraint(equalTo: createProfileButton.bottomAnchor, constant: 16),
+            biometrySignInButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            biometrySignInButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            biometrySignInButton.heightAnchor.constraint(equalToConstant: 50),
+            biometrySignInButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
         ]
         
         NSLayoutConstraint.activate(constraints)
