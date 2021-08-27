@@ -33,6 +33,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // No Internet  connection error
         ///Error Domain=NSURLErrorDomain Code=-1009 "The Internet connection appears to be offline."
         
+        let localNotificationsService = LocalNotificationsService()
+        localNotificationsService.registerForLatestUpdatesIfPossible()
+        
         return true
     }
     
