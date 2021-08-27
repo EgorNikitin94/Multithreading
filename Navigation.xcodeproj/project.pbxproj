@@ -45,6 +45,7 @@
 		50B7CBF1267CE13F00A1A739 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 50B7CBF3267CE13F00A1A739 /* Localizable.stringsdict */; };
 		50C9F19A2687CE3C00DBB059 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C9F1992687CE3C00DBB059 /* UIViewExtension.swift */; };
 		50CD168C25B066270059B364 /* CoordinatorsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CD168B25B066270059B364 /* CoordinatorsFactory.swift */; };
+		50D8582526D9845F00854DD0 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D8582426D9845F00854DD0 /* NotificationService.swift */; };
 		50E3C86C25AF96C1009FE70F /* ChildCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E3C86B25AF96C1009FE70F /* ChildCoordinator.swift */; };
 		50E92790255DEBC300CB8A71 /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E9278F255DEBC200CB8A71 /* PostTableViewCell.swift */; };
 		50EB664A256400030034129A /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50EB6649256400030034129A /* Colors.swift */; };
@@ -97,6 +98,7 @@
 		50B7CBF4267CE15100A1A739 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		50C9F1992687CE3C00DBB059 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		50CD168B25B066270059B364 /* CoordinatorsFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorsFactory.swift; sourceTree = "<group>"; };
+		50D8582426D9845F00854DD0 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		50E3C86B25AF96C1009FE70F /* ChildCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildCoordinator.swift; sourceTree = "<group>"; };
 		50E9278F255DEBC200CB8A71 /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
 		50EB6649256400030034129A /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 			children = (
 				060782B1250CE27700A87020 /* AppDelegate.swift */,
 				50A3FDD625FCCAC900BC8E48 /* NetworkService */,
+				50D8582326D983F700854DD0 /* NotificationService */,
 				50B5D58F259B444F003C372B /* App navigation */,
 				5077CFA9255DA2CA00BC50C3 /*  Model */,
 				5077CFAD255DA43100BC50C3 /* Storage */,
@@ -280,6 +283,14 @@
 				50C9F1992687CE3C00DBB059 /* UIViewExtension.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		50D8582326D983F700854DD0 /* NotificationService */ = {
+			isa = PBXGroup;
+			children = (
+				50D8582426D9845F00854DD0 /* NotificationService.swift */,
+			);
+			path = NotificationService;
 			sourceTree = "<group>";
 		};
 		50EB66482563FFE50034129A /* Colors */ = {
@@ -438,6 +449,7 @@
 				502E9F4C25B5B3F000E280FB /* ProfileViewModel.swift in Sources */,
 				500C257D25A8984D00383FAF /* ContainerView.swift in Sources */,
 				505BB49B26026F8100E6B8A7 /* Resident.swift in Sources */,
+				50D8582526D9845F00854DD0 /* NotificationService.swift in Sources */,
 				060782B6250CE27700A87020 /* FeedViewController.swift in Sources */,
 				50CD168C25B066270059B364 /* CoordinatorsFactory.swift in Sources */,
 				50A3FDD825FCCAF600BC8E48 /* NetworkService.swift in Sources */,
